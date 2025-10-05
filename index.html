@@ -6,7 +6,7 @@
     <title>Ankit Dabas | Gameplay Programmer</title>
     <!-- Load Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Configure Tailwind for custom colors and font -->
     <script>
         tailwind.config = {
@@ -21,9 +21,9 @@
                     },
                     fontFamily: {
                         // Set Inter for body text (sans)
-                        sans: ['Inter', 'sans-serif'], 
+                        sans: ['Inter', 'sans-serif'],
                         // New custom font family for headings
-                        heading: ['Poppins', 'sans-serif'], 
+                        heading: ['Poppins', 'sans-serif'],
                     },
                 }
             }
@@ -49,6 +49,19 @@
             color: var(--tw-colors-teal-accent);
             background-color: transparent !important;
         }
+
+        /* --- NEW CSS FOR IMAGE EFFECT --- */
+
+        /* 1. Apply grayscale filter and smooth transition by default */
+        .profile-image-effect {
+            filter: grayscale(100%);
+            transition: filter 0.5s ease-in-out; /* Smooth 0.5 second transition */
+        }
+
+            /* 2. Remove grayscale (show color) on hover */
+            .profile-image-effect:hover {
+                filter: grayscale(0%);
+            }
     </style>
 </head>
 <!-- Apply new primary colors to the body -->
@@ -57,7 +70,7 @@
     <!-- Header & Navigation Bar -->
     <header class="container mx-auto px-6 lg:px-24 py-6 border-b border-light-border">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
-            
+
             <!-- Left Side: Name and Title (Dark Charcoal text, Poppins font) -->
             <div class="mb-4 md:mb-0">
                 <h1 class="text-3xl font-heading font-bold text-text-default">
@@ -67,10 +80,10 @@
                     Gameplay Programmer
                 </p>
             </div>
-            
+
             <!-- Right Side: Social Icons and Resume Button (Teal Accent) -->
             <div class="flex items-center space-x-4">
-                
+
                 <!-- Social Icons (Default Dark Charcoal, Teal Hover) -->
                 <a href="https://github.com/your-username" target="_blank" class="text-text-default hover:text-teal-accent transition duration-200 icon-hover">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7a3.37 3.37 0 0 0-.94 2.61V19"></path></svg>
@@ -78,14 +91,14 @@
                 <a href="https://linkedin.com/in/your-profile" target="_blank" class="text-text-default hover:text-teal-accent transition duration-200 icon-hover">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
                 </a>
-                
+
                 <!-- Instagram Icon Added Here -->
                 <a href="https://instagram.com/your-profile" target="_blank" class="text-text-default hover:text-teal-accent transition duration-200 icon-hover">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="w-6 h-6">
-                        <path d="M12 2c-2.71 0-3.05.01-4.12.06-1.07.05-1.79.23-2.42.47-.64.24-1.18.57-1.72 1.1-.54.53-.87 1.08-1.1 1.72-.24.63-.42 1.35-.47 2.42-.05 1.07-.06 1.41-.06 4.12s.01 3.05.06 4.12c.05 1.07.23 1.79.47 2.42.24.64.57 1.18 1.1 1.72.54.54 1.08.87 1.72 1.1.63.24 1.35.42 2.42.47 1.07.05 1.41.06 4.12.06s3.05-.01 4.12-.06c1.07-.05 1.79-.23 2.42-.47.64-.24 1.18-.57 1.72-1.1.54-.53.87-1.08 1.1-1.72.24-.63.42-1.35.47-2.42.05-1.07.06-1.41.06-4.12s-.01-3.05-.06-4.12c-.05-1.07-.23-1.79-.47-2.42-.24-.64-.57-1.18-1.1-1.72-.53-.54-1.08-.87-1.72-1.1-.63-.24-1.35-.42-2.42-.47C15.05 2.01 14.71 2 12 2zm0 1.5c2.68 0 3 .01 4.05.06 1.01.05 1.55.21 1.95.38.41.17.76.4.99.63.23.23.46.58.63.99.17.4.33.94.38 1.95.05 1.05.06 1.37.06 4.05s-.01 3-.06 4.05c-.05 1.01-.21 1.55-.38 1.95-.17.41-.4.76-.63.99-.23.23-.58.46-.99.63-.4.17-.94.33-1.95.38-1.05.05-1.37.06-4.05.06s-3-.01-4.05-.06c-1.01-.05-1.55-.21-1.95-.38-.41-.17-.76-.4-.99-.63-.23-.23-.46-.58-.63-.99-.17-.4-.33-.94-.38-1.95-.05-1.05-.06-1.37-.06-4.05s.01-3 .06-4.05c.05-1.01.21-1.55.38-1.95.17-.41.4-.76.63-.99.23-.23.58-.46.99-.63.4-.17.94-.33 1.95-.38 1.05-.05 1.37-.06 4.05-.06zM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 1.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7zm5-1.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                        <path d="M12 2c-2.71 0-3.05.01-4.12.06-1.07.05-1.79.23-2.42.47-.64.24-1.18.57-1.72 1.1-.54.53-.87 1.08-1.1 1.72-.24.63-.42 1.35-.47 2.42-.05 1.07-.06 1.41-.06 4.12s.01 3.05.06 4.12c.05 1.07.23 1.79.47 2.42.24.64.57 1.18 1.1 1.72.54.54 1.08.87 1.72 1.1.63.24 1.35.42 2.42.47 1.07.05 1.41.06 4.12.06s3.05-.01 4.12-.06c1.07-.05 1.79-.23 2.42-.47.64-.24 1.18-.57 1.72-1.1.54-.53.87-1.08 1.1-1.72.24-.63.42-1.35.47-2.42.05-1.07.06-1.41.06-4.12s-.01-3.05-.06-4.12c-.05-1.07-.23-1.79-.47-2.42-.24-.64-.57-1.18-1.1-1.72-.53-.54-1.08-.87-1.72-1.1-.63-.24-1.35-.42-2.42-.47C15.05 2.01 14.71 2 12 2zm0 1.5c2.68 0 3 .01 4.05.06 1.01.05 1.55.21 1.95.38.41.17.76.4.99.63.23.23.46.58.63.99.17.4.33.94.38 1.95.05 1.05.06 1.37.06 4.05s-.01 3-.06 4.05c-.05 1.01-.21 1.55-.38 1.95-.17.41-.4.76-.63.99-.23.23-.58.46-.99.63-.4.17-.94.33-1.95.38-1.05.05-1.37.06-4.05.06s-3-.01-4.05-.06c-1.01-.05-1.55-.21-1.95-.38-.41-.17-.76-.4-.99-.63-.23-.23-.46-.58-.63-.99-.17-.4-.33-.94-.38-1.95-.05-1.05-.06-1.37-.06-4.05s.01-3 .06-4.05c.05-1.01.21-1.55.38-1.95.17-.41.4-.76.63-.99.23-.23.58-.46.99-.63.4-.17.94-.33 1.95-.38 1.05-.05 1.37-.06 4.05-.06zM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 1.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7zm5-1.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
                     </svg>
                 </a>
-                
+
                 <!-- Resume Button (Teal Outline, Teal Text) -->
                 <a href="[LINK_TO_YOUR_RESUME.PDF]" target="_blank" class="text-teal-accent border border-teal-accent px-4 py-2 rounded-full font-semibold hover:bg-teal-accent hover:text-bg-primary transition duration-200 text-sm">
                     Resume ↓
@@ -96,22 +109,23 @@
 
     <!-- Main Content Area -->
     <main class="container mx-auto px-6 lg:px-24 py-12">
-        
+
         <!-- Hero/About Section -->
         <section id="about" class="mb-20">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-                
+
                 <!-- Profile Image -->
                 <div class="col-span-1 flex justify-center md:justify-start">
+                    <!-- Apply the hover class to the container div -->
                     <div class="w-48 h-48 sm:w-56 sm:h-56 rounded-full overflow-hidden profile-border">
-                        <!-- Path points to the file in the same directory: profile.jpeg -->
-                        <img src="./profile.jpeg" onerror="this.onerror=null; this.src='https://placehold.co/224x224/F0F0F0/333333?text=PROFILE+ERROR';" alt="Profile Photo" class="w-full h-full object-cover">
+                        <!-- Apply the image effect class to the img tag -->
+                        <img src="./profile.jpeg" onerror="this.onerror=null; this.src='https://placehold.co/224x224/F0F0F0/333333?text=PROFILE+ERROR';" alt="Profile Photo" class="w-full h-full object-cover profile-image-effect">
                     </div>
                 </div>
-                
+
                 <!-- Biography Text -->
                 <div class="col-span-1 md:col-span-2 bio-text-container">
-                    
+
                     <!-- Editable Bio Content -->
                     <div id="bio-content">
                         <p class="text-xl leading-relaxed text-text-default mb-4">
@@ -121,18 +135,17 @@
                             I thrive in environments where creativity meets technical rigor, translating complex requirements into simple, maintainable, and high-performance solutions. Let's connect!
                         </p>
                     </div>
-                    <!-- AI Refiner Button and Output removed -->
                 </div>
             </div>
         </section>
 
-        <!-- Projects Section (Projects Example) -->
+        <!-- Projects Section (Game Programming Example) -->
         <section id="projects" class="mb-20">
             <!-- Heading uses Poppins font -->
             <h2 class="text-3xl font-heading font-bold text-text-default mb-8 border-b border-light-border pb-1 inline-block">
-                Projects
+                Game Programming
             </h2>
-            
+
             <!-- Example Project 1: Card background is now light gray -->
             <div class="bg-light-border p-6 rounded-lg shadow-sm mb-6">
                 <div class="flex justify-between items-center mb-4">
@@ -164,8 +177,6 @@
             </div>
 
             <hr class="border-t border-light-border my-8">
-
-            <!-- AI Game Concept Generator removed -->
         </section>
 
     </main>
@@ -181,4 +192,3 @@
     </script>
 </body>
 </html>
-
