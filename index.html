@@ -7,22 +7,23 @@
     <!-- Load Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Configure Tailwind for custom colors and font -->
+    <!-- Configure Tailwind for custom colors and font (NEW DESIGN: Glassmorphism Light) -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        // New Light Mode Colors
-                        'bg-primary': '#FFFFFF', // White background
-                        'text-default': '#333333', // Dark Charcoal text (Body Text)
-                        'teal-accent': '#00A896', // Bright Teal accent (Links/Buttons)
-                        'light-border': '#F0F0F0', // Very light gray for borders/cards
+                        // GLASSMORHISM LIGHT COLORS
+                        'bg-primary': '#F9F9F9', // Soft White background
+                        'text-default': '#2A2A2A', // Dark Gray Text
+                        'charcoal-accent': '#333333', // Dark Charcoal Accent Color
+                        'card-bg': 'rgba(255, 255, 255, 0.5)', // Transparent White for Glass
+                        'dark-border': '#E0E0E0', // Light Gray Border
+                        'project-meta': '#555555', // Mid Gray for metadata
                     },
                     fontFamily: {
-                        // Set Inter for body text (sans)
-                        sans: ['Inter', 'sans-serif'],
-                        // New custom font family for headings
+                        // Use Poppins for everything for a bold, unified look
+                        sans: ['Poppins', 'sans-serif'],
                         heading: ['Poppins', 'sans-serif'],
                     },
                 }
@@ -30,77 +31,130 @@
         }
     </script>
     <style>
-        /* Import Inter for body and Poppins (Wght 700) for headings */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@700&display=swap');
+        /* Import Poppins (Wght 700, 400) for the new theme */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
-        /* Custom style for the profile image border (use light border) */
+        /* Custom style for the profile image border (NOW CIRCULAR) */
         .profile-border {
-            border: 3px solid var(--tw-colors-light-border);
+            border: 4px solid var(--tw-colors-charcoal-accent);
+            /* Increased shadow for "more depth" effect */
+            box-shadow: 0 0 45px rgba(51, 51, 51, 0.8); /* MORE DEPTH */
         }
 
-        /* Ensures the text block is aligned with the top of the image */
-        .bio-text-container {
-            align-self: flex-start;
+        /* Applying Glassmorphism Effect to Cards */
+        .glass-card {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.25); /* Increased initial shadow for depth */
         }
 
-        /* Custom SVG icons for the links */
-        .icon-hover:hover {
-            /* Now uses the teal accent color */
-            color: var(--tw-colors-teal-accent);
-            background-color: transparent !important;
+        /* New class for the social button appearance and hover effect */
+        .social-btn {
+            color: var(--tw-colors-text-default);
+            padding: 0.375rem; /* p-1.5 equivalent */
+            border-radius: 9999px; /* rounded-full equivalent */
+            transition: all 0.2s ease-in-out;
+            /* Added to make IMG children inherit colors better */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* --- NEW CSS FOR IMAGE EFFECT --- */
+            .social-btn:hover {
+                color: var(--tw-colors-bg-primary); /* Text color becomes white */
+                background-color: var(--tw-colors-charcoal-accent); /* Background becomes charcoal */
+                /* INCREASED SHADOW OPACITY TO ~70% */
+                filter: drop-shadow(0 4px 6px rgba(51, 51, 51, 0.7));
+            }
 
-        /* 1. Apply grayscale filter and smooth transition by default */
+        /* --- IMAGE EFFECT (Black & White to Color on Hover) --- */
         .profile-image-effect {
             filter: grayscale(100%);
-            transition: filter 0.5s ease-in-out; /* Smooth 0.5 second transition */
+            transition: filter 0.5s ease-in-out;
         }
 
-            /* 2. Remove grayscale (show color) on hover */
             .profile-image-effect:hover {
                 filter: grayscale(0%);
             }
+
+        /* --- PROJECT GRID LAYOUT (Back to 2-Column Responsive) --- */
+
+        /* Utility classes for responsive aspect ratio (3:2) */
+        .aspect-w-3 {
+            --tw-aspect-w: 3;
+            --tw-aspect-h: 2;
+            padding-bottom: calc(var(--tw-aspect-h) / var(--tw-aspect-w) * 100%);
+        }
+
+        .aspect-h-2 {
+            --tw-aspect-h: 2;
+        }
+
+        .aspect-ratio-box {
+            position: relative;
+            height: 0;
+        }
+
+        /* Ensure IMG icons inherit color correctly */
+        .social-btn img {
+            filter: grayscale(100%);
+            transition: filter 0.2s ease-in-out;
+        }
+
+        .social-btn:hover img {
+            filter: grayscale(0%);
+        }
+
+        /* Custom width for the line to span the center of the social icons */
+        .social-line-width {
+            /* Reduced width to 100px for a tighter fit */
+            width: 150px;
+        }
     </style>
 </head>
 <!-- Apply new primary colors to the body -->
 <body class="bg-bg-primary text-text-default font-sans antialiased">
 
-    <!-- Header & Navigation Bar -->
-    <header class="container mx-auto px-6 lg:px-24 py-6 border-b border-light-border">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+    <!-- Header & Navigation Bar (Absolute position to not interfere with hero centering) -->
+    <header class="container mx-auto px-6 lg:px-24 py-6 absolute top-0 left-0 right-0 z-10">
+        <div class="flex justify-end items-center">
 
-            <!-- Left Side: Name and Title (Dark Charcoal text, Poppins font) -->
-            <div class="mb-4 md:mb-0">
-                <h1 class="text-3xl font-heading font-bold text-text-default">
-                    Ankit Dabas
-                </h1>
-                <p class="text-lg text-text-default">
-                    Gameplay Programmer
-                </p>
-            </div>
-
-            <!-- Right Side: Social Icons and Resume Button (Teal Accent) -->
+            <!-- Container for the Social Icons and Resume Button (space-x-4 added for separation) -->
             <div class="flex items-center space-x-4">
 
-                <!-- Social Icons (Default Dark Charcoal, Teal Hover) -->
-                <a href="https://github.com/your-username" target="_blank" class="text-text-default hover:text-teal-accent transition duration-200 icon-hover">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7a3.37 3.37 0 0 0-.94 2.61V19"></path></svg>
-                </a>
-                <a href="https://linkedin.com/in/your-profile" target="_blank" class="text-text-default hover:text-teal-accent transition duration-200 icon-hover">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-                </a>
+                <!-- MODIFIED: Wrapper for social icons with centered bottom line -->
+                <!-- items-end maintains alignment to the right -->
+                <div class="flex flex-col items-end">
+                    <!-- Social Icons (Charcoal on Hover) -->
+                    <div class="flex items-center space-x-2 pb-1">
+                        <a href="https://github.com/iankitdabas" target="_blank" class="social-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7a3.37 3.37 0 0 0-.94 2.61V19"></path></svg>
+                        </a>
+                        <a href="https://linkedin.com/in/iankitdabas" target="_blank" class="social-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                        </a>
+                        <!-- Itch.io Icon using an IMG tag for external SVG -->
+                        <a href="https://ankitdabas.itch.io/" target="_blank" class="social-btn">
+                            <!-- The IMG tag points to the local SVG file -->
+                            <img src="./image/itch.svg"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/24x24/F9F9F9/333333?text=itch'; this.style.filter='none';"
+                                 alt="itch.io"
+                                 class="w-7 h-7 object-contain">
+                        </a>
+                        <a href="https://instagram.com/iankitdabas" target="_blank" class="social-btn">
+                            <img src="./image/instagram.svg"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/24x24/F9F9F9/333333?text=itch'; this.style.filter='none';"
+                                 alt="instagram.com"
+                                 class="w-6 h-6 object-contain">
+                        </a>
+                    </div>
+                    <!-- Short, Thin Line - Now Centered beneath the icons -->
+                    <div class="social-line-width border-b border-charcoal-accent mx-auto"></div>
+                </div>
 
-                <!-- Instagram Icon Added Here -->
-                <a href="https://instagram.com/your-profile" target="_blank" class="text-text-default hover:text-teal-accent transition duration-200 icon-hover">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="w-6 h-6">
-                        <path d="M12 2c-2.71 0-3.05.01-4.12.06-1.07.05-1.79.23-2.42.47-.64.24-1.18.57-1.72 1.1-.54.53-.87 1.08-1.1 1.72-.24.63-.42 1.35-.47 2.42-.05 1.07-.06 1.41-.06 4.12s.01 3.05.06 4.12c.05 1.07.23 1.79.47 2.42.24.64.57 1.18 1.1 1.72.54.54 1.08.87 1.72 1.1.63.24 1.35.42 2.42.47 1.07.05 1.41.06 4.12.06s3.05-.01 4.12-.06c1.07-.05 1.79-.23 2.42-.47.64-.24 1.18-.57 1.72-1.1.54-.53.87-1.08 1.1-1.72.24-.63.42-1.35.47-2.42.05-1.07.06-1.41.06-4.12s-.01-3.05-.06-4.12c-.05-1.07-.23-1.79-.47-2.42-.24-.64-.57-1.18-1.1-1.72-.53-.54-1.08-.87-1.72-1.1-.63-.24-1.35-.42-2.42-.47C15.05 2.01 14.71 2 12 2zm0 1.5c2.68 0 3 .01 4.05.06 1.01.05 1.55.21 1.95.38.41.17.76.4.99.63.23.23.46.58.63.99.17.4.33.94.38 1.95.05 1.05.06 1.37.06 4.05s-.01 3-.06 4.05c-.05 1.01-.21 1.55-.38 1.95-.17.41-.4.76-.63.99-.23.23-.58.46-.99.63-.4.17-.94.33-1.95.38-1.05.05-1.37.06-4.05.06s-3-.01-4.05-.06c-1.01-.05-1.55-.21-1.95-.38-.41-.17-.76-.4-.99-.63-.23-.23-.46-.58-.63-.99-.17-.4-.33-.94-.38-1.95-.05-1.05-.06-1.37-.06-4.05s.01-3 .06-4.05c.05-1.01.21-1.55.38-1.95.17-.41.4-.76.63-.99.23-.23.58-.46.99-.63.4-.17.94-.33 1.95-.38 1.05-.05 1.37-.06 4.05-.06zM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 1.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7zm5-1.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                    </svg>
-                </a>
-
-                <!-- Resume Button (Teal Outline, Teal Text) -->
-                <a href="[LINK_TO_YOUR_RESUME.PDF]" target="_blank" class="text-teal-accent border border-teal-accent px-4 py-2 rounded-full font-semibold hover:bg-teal-accent hover:text-bg-primary transition duration-200 text-sm">
+                <!-- Resume Button (Charcoal Accent Border, spaced 4 units away from the box) -->
+                <a href="[LINK_TO_YOUR_RESUME.PDF]" target="_blank" class="text-charcoal-accent border-2 border-charcoal-accent px-4 py-2 font-semibold hover:bg-charcoal-accent hover:text-bg-primary transition duration-200 text-sm tracking-widest uppercase hover:shadow-lg hover:shadow-charcoal-accent/70">
                     Resume ↓
                 </a>
             </div>
@@ -108,88 +162,168 @@
     </header>
 
     <!-- Main Content Area -->
-    <main class="container mx-auto px-6 lg:px-24 py-12">
+    <main id="main-content-area" class="container mx-auto px-6 lg:px-24">
 
-        <!-- Hero/About Section -->
-        <section id="about" class="mb-20">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+        <!-- Hero/About Section: MODIFIED TO BE SLIGHTLY TALLER THAN VIEWPORT AND CENTERED -->
+        <section id="about" class="min-h-[105vh] flex items-center justify-center pt-0">
+            <!-- Changed min-h-screen to min-h-[105vh] to push projects just off-screen -->
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-10 items-start w-full">
 
-                <!-- Profile Image -->
-                <div class="col-span-1 flex justify-center md:justify-start">
-                    <!-- Apply the hover class to the container div -->
-                    <div class="w-48 h-48 sm:w-56 sm:h-56 rounded-full overflow-hidden profile-border">
-                        <!-- Apply the image effect class to the img tag -->
-                        <img src="./image/profile.jpeg" onerror="this.onerror=null; this.src='https://placehold.co/224x224/F0F0F0/333333?text=PROFILE+ERROR';" alt="Profile Photo" class="w-full h-full object-cover profile-image-effect">
+                <!-- Left Column (Profile Image, 2/5 width on desktop) -->
+                <div class="col-span-1 md:col-span-2 flex justify-center md:ml-10">
+                    <!-- Profile Image (Circular Shape) -->
+                    <div class="w-56 h-56 rounded-full overflow-hidden profile-border transform hover:scale-105 transition-transform duration-300">
+                        <img src="./profile.jpeg" onerror="this.onerror=null; this.src='https://placehold.co/224x224/F0F0F0/333333?text=PROFILE+ERROR';" alt="Profile Photo" class="w-full h-full object-cover profile-image-effect">
                     </div>
                 </div>
 
-                <!-- Biography Text -->
-                <div class="col-span-1 md:col-span-2 bio-text-container">
-
-                    <!-- Editable Bio Content -->
-                    <div id="bio-content">
+                <!-- Right Column (Bio Text, 3/5 width on desktop) -->
+                <div class="col-span-1 md:col-span-3">
+                    <div class="mb-6">
+                        <p class="text-4xl leading-snug text-text-default mb-4 font-heading font-bold">
+                            Hello, I'm <span class="text-charcoal-accent">Ankit Dabas</span>, a Gameplay Programmer.
+                        </p>
                         <p class="text-xl leading-relaxed text-text-default mb-4">
-                            Gameplay Programmer specializing in Game Systems and Core Logic, focused on writing efficient, clean code and tackling new challenges in Game Development.
+                            Gameplay Programmer specializing in Game Systems and Core Logic.
                         </p>
-                        <p class="text-xl leading-relaxed text-text-default">
-                            I thrive in environments where creativity meets technical rigor, translating complex requirements into simple, maintainable, and high-performance solutions. Let's connect!
+                        <p class="text-md leading-relaxed text-project-meta max-w-3xl">
+                            Focused on writing efficient, clean code and tackling new challenges in Game Development. I thrive in environments where creativity meets technical rigor, translating complex requirements into simple, maintainable, and high-performance solutions. Let's connect!
                         </p>
                     </div>
                 </div>
+
             </div>
         </section>
 
-        <!-- Projects Section (Game Programming Example) -->
+        <!-- Projects Section: Starts just below the fold -->
         <section id="projects" class="mb-20">
-            <!-- Heading uses Poppins font -->
-            <h2 class="text-3xl font-heading font-bold text-text-default mb-8 border-b border-light-border pb-1 inline-block">
-                Game Programming
+            <h2 class="text-3xl font-heading font-bold text-text-default mb-8 border-b border-dark-border pb-1 inline-block">
+                <span class="text-charcoal-accent">//</span> Projects
             </h2>
 
-            <!-- Example Project 1: Card background is now light gray -->
-            <div class="bg-light-border p-6 rounded-lg shadow-sm mb-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-heading font-bold text-teal-accent">Top-Down Roguelike Tilemap Engine</h3>
-                    <span class="text-sm text-teal-accent font-semibold">Score: 3508</span>
-                </div>
-                <p class="text-text-default mb-4">
-                    A fully custom, optimized tile-based rendering engine built in C++ and OpenGL. Focused on efficient pathfinding algorithms and complex character state machines.
-                </p>
-                <!-- Mockup of the game screenshot seen in the image -->
-                <div class="w-full h-40 bg-bg-primary border border-light-border p-2 overflow-hidden rounded-md">
-                    <!-- Path updated to point to a screenshot in your images folder -->
-                    <div class="w-full h-full bg-[url('./images/tilemap-screenshot.png')] bg-cover bg-center rounded-sm flex items-center justify-center">
-                        <p class="text-teal-accent text-sm opacity-70">
-                            [Replace URL in background image class with your screenshot path]
+            <!-- Project Cards 3-Column Grid Container -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                <!-- Project Card 1: 3D-Sword (2023) -->
+                <!-- Applied Glassmorphism styling with increased shadow depth -->
+                <a href="[LINK_TO_PROJECT_1_DEMO]" target="_blank" class="block group glass-card bg-card-bg rounded-xl shadow-xl hover:shadow-2xl hover:shadow-charcoal-accent/70 transition-all duration-300 transform hover:scale-[1.01]">
+
+                    <!-- Aspect Ratio Container (3:2 ratio preserved) -->
+                    <div class="w-full aspect-ratio-box aspect-w-3 aspect-h-2 border-b border-dark-border rounded-t-xl overflow-hidden">
+
+                        <div class="absolute inset-0 p-2">
+                            <div class="w-full h-full rounded-lg relative overflow-hidden">
+
+                                <!-- The Video element -->
+                                <video src="./image/SwordFight.mp4"
+                                       autoplay loop muted playsinline
+                                       poster="https://placehold.co/600x400/DDEEEE/333333?text=Video+Loading..."
+                                       class="w-full h-full object-cover">
+                                    Your browser does not support the video tag.
+                                </video>
+
+                                <!-- Duration and Tech Stack Bottom Bar -->
+                                <div class="absolute bottom-0 left-0 right-0 py-0 px-1 flex justify-center space-x-12 text-xs rounded-b-lg z-10 bg-card-bg/80 border-t border-dark-border">
+                                    <div class="flex space-x-8">
+                                        <span class="flex items-center text-project-meta font-medium whitespace-nowrap">
+                                            <!-- FIXED: Adjusted to 3.5 for smaller size -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="meta-icon mr-1 w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                            6 Months
+                                        </span>
+                                        <span class="flex items-center text-project-meta font-medium">
+                                            <!-- FIXED: Adjusted to 3.5 for larger size, matching duration icon -->
+                                            <img src="./image/UnrealEngine.svg" onerror="this.onerror=null; this.src='https://placehold.co/16x16/F0F0F0/333333?text=UE';" class="meta-icon mr-1 w-3.5 h-3.5" alt="Unreal Engine Logo">
+                                            UE 4.27 (C++ & Blueprint)
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Text Content Area: Padding reduced from p-6 to py-4 px-6 -->
+                    <div class="py-4 px-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="text-xl font-heading font-bold text-text-default group-hover:text-charcoal-accent transition duration-300">
+                                    3D-Sword (2023)
+                                </h3>
+                                <span class="text-sm text-project-meta">Gameplay Programmer</span>
+                            </div>
+                            <!-- Arrow Icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-charcoal-accent flex-shrink-0 ml-4 group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                        <p class="text-sm text-project-meta">
+                            This project is a take on the Space Shooter genre. I developed my own ECS and used the Wave Function Collapse algorithm as a background generator.
                         </p>
                     </div>
+                </a>
+
+                <!-- Project Card 2: Game Jam Project (2022) -->
+                <!-- Applied Glassmorphism styling with increased shadow depth -->
+                <a href="[LINK_TO_PROJECT_2_DEMO]" target="_blank" class="block group glass-card bg-card-bg rounded-xl shadow-xl hover:shadow-2xl hover:shadow-charcoal-accent/70 transition-all duration-300 transform hover:scale-[1.01]">
+
+                    <!-- Aspect Ratio Container (3:2 ratio preserved) -->
+                    <div class="w-full aspect-ratio-box aspect-w-3 aspect-h-2 border-b border-dark-border rounded-t-xl overflow-hidden">
+
+                        <div class="absolute inset-0 p-2">
+                            <div class="w-full h-full bg-[url('https://placehold.co/600x400/333333/AAAAAA?text=Project+Screenshot+2')] bg-cover bg-center rounded-lg relative">
+
+                                <!-- Duration and Tech Stack Bottom Bar -->
+                                <div class="absolute bottom-0 left-0 right-0 py-0 px-1 flex justify-center space-x-12 text-xs rounded-b-lg bg-card-bg/80 border-t border-dark-border">
+                                    <div class="flex space-x-8">
+                                        <span class="flex items-center text-project-meta font-medium whitespace-nowrap">
+                                            <!-- FIXED: Adjusted to 3.5 for smaller size -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="meta-icon mr-1 w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                            1 Week
+                                        </span>
+                                        <span class="flex items-center text-project-meta font-medium">
+                                            <!-- FIXED: Adjusted to 3.5 for larger size, matching duration icon -->
+                                            <img src="./image/UnrealEngine.svg" onerror="this.onerror=null; this.src='https://placehold.co/16x16/F0F0F0/333333?text=UE';" class="meta-icon mr-1 w-3.5 h-3.5" alt="Unreal Engine Logo">
+                                            UE 5.5 (C++ & Blueprint)
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Text Content Area: Padding reduced from p-6 to py-4 px-6 -->
+                    <div class="py-4 px-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="text-xl font-heading font-bold text-text-default group-hover:text-charcoal-accent transition duration-300">
+                                    Game Jam Project (2022)
+                                </h3>
+                                <span class="text-sm text-project-meta">Gameplay Programmer</span>
+                            </div>
+                            <!-- Arrow Icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-charcoal-accent flex-shrink-0 ml-4 group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                        <p class="text-sm text-project-meta">
+                            This project is a Bomberbots clone made in Lua using the Löve2D framwork, that my classmate David Bång and I worked on while studying at FutureGames.
+                        </p>
+                    </div>
+                </a>
+
+                <!-- Placeholder for 3rd Project Card (New 3-column demonstration) -->
+                <div class="block glass-card bg-card-bg rounded-xl shadow-xl border border-dashed border-charcoal-accent/50 flex items-center justify-center p-8 transition-all duration-300">
+                    <p class="text-charcoal-accent font-semibold text-center opacity-70">
+                        Add Your Third Project Here
+                    </p>
                 </div>
             </div>
-
-            <!-- Example Project 2: Card background is now light gray -->
-            <div class="bg-light-border p-6 rounded-lg shadow-sm mb-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-heading font-bold text-teal-accent">Real-time Multiplayer Physics Simulator</h3>
-                </div>
-                <p class="text-text-default mb-4">
-                    Developed a low-latency, client-side prediction model using Unity DOTS (Data-Oriented Technology Stack) for a scalable multiplayer environment.
-                </p>
-            </div>
-
-            <hr class="border-t border-light-border my-8">
         </section>
 
     </main>
 
     <!-- Footer Placeholder (Simple, minimal) -->
-    <footer class="container mx-auto px-6 lg:px-24 py-8 text-center text-sm text-text-default border-t border-light-border">
+    <footer class="container mx-auto px-6 lg:px-24 py-8 text-center text-sm text-project-meta border-t border-dark-border">
         <p>&copy; <span id="current-year"></span> Ankit Dabas. All Rights Reserved.</p>
     </footer>
 
-    <!-- All Gemini API logic removed -->
     <script>
         document.getElementById('current-year').textContent = new Date().getFullYear();
     </script>
 </body>
 </html>
-
