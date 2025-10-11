@@ -113,6 +113,19 @@
             /* Reduced width to 100px for a tighter fit */
             width: 150px;
         }
+
+        /* Custom gradient for the new Hero section background */
+        .hero-gradient {
+            background: linear-gradient(180deg, rgba(249, 249, 249, 1) 0%, rgba(230, 230, 230, 1) 100%);
+        }
+
+        /* Custom style for the tapering line */
+        .tapering-line {
+            height: 2px; /* Set a fixed thickness for the line */
+            width: 80%; /* CHANGED TO 80% WIDTH */
+            /* Create a linear gradient: transparent -> charcoal -> transparent */
+            background: linear-gradient(to right, rgba(51, 51, 51, 0) 0%, rgba(51, 51, 51, 0.7) 40%, rgba(51, 51, 51, 0.7) 60%, rgba(51, 51, 51, 0) 100%);
+        }
     </style>
 </head>
 <!-- Apply new primary colors to the body -->
@@ -160,244 +173,379 @@
             </a>
         </div>
     </header>
-
+        
     <!-- Main Content Area -->
-    <main id="main-content-area" class="container mx-auto px-6 lg:px-24">
+    <main id="main-content-area">
 
-        <!-- Hero/About Section: MODIFIED FOR MOBILE RESPONSIVENESS AND FULL HEIGHT -->
-        <section id="about" class="min-h-[105vh] flex items-center justify-center pt-24 md:pt-0">
-            <!-- Added pt-24 here to push content below the absolute header on small screens -->
-            <div class="grid grid-cols-1 md:grid-cols-5 gap-10 items-start w-full">
+        <!-- NEW HERO SECTION (Full screen, centered text) -->
+        <section id="hero" class="hero-gradient min-h-screen flex flex-col items-center justify-center text-center px-6 py-20">
+            <h1 class="text-5xl md:text-5xl font-heading font-bold text-text-default mb-4 max-w-4xl">
+                Hi, I am <span class="text-charcoal-accent">Ankit Dabas</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-project-meta mb-6">
+                I'm a Gameplay Programmer!
+            </p>
 
-                <!-- Left Column (Profile Image, 2/5 width on desktop) -->
-                <div class="col-span-1 md:col-span-2 flex justify-center md:justify-start md:ml-10">
-                    <!-- Profile Image (Circular Shape) -->
-                    <div class="w-56 h-56 rounded-full overflow-hidden profile-border transform hover:scale-105 transition-transform duration-300">
-                        <img src="./profile.jpeg" onerror="this.onerror=null; this.src='https://placehold.co/224x224/F0F0F0/333333?text=PROFILE+ERROR';" alt="Profile Photo" class="w-full h-full object-cover profile-image-effect">
-                    </div>
-                </div>
+            <!-- Tapering Line Separator -->
+            <div class="tapering-line mb-10 mx-auto"></div>
 
-                <!-- Right Column (Bio Text, 3/5 width on desktop) -->
-                <div class="col-span-1 md:col-span-3 text-center md:text-left">
-                    <!-- Added text-center for mobile alignment -->
-                    <div class="mb-6">
-                        <p class="text-4xl leading-snug text-text-default mb-4 font-heading font-bold">
-                            Hello, I'm <span class="text-charcoal-accent">Ankit Dabas</span>, a Gameplay Programmer.
-                        </p>
-                        <p class="text-xl leading-relaxed text-text-default mb-4">
-                            Gameplay Programmer specializing in Game Systems and Core Logic.
-                        </p>
-                        <p class="text-md leading-relaxed text-project-meta max-w-3xl md:max-w-full mx-auto">
-                            <!-- Added mx-auto to center text block on mobile -->
-                            Focused on writing efficient, clean code and tackling new challenges in Game Development. I thrive in environments where creativity meets technical rigor, translating complex requirements into simple, maintainable, and high-performance solutions. Let's connect!
-                        </p>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- Projects Section: Starts just below the fold -->
-        <section id="projects" class="mb-20">
-            <h2 class="text-3xl font-heading font-bold text-text-default mb-8 border-b border-dark-border pb-1 inline-block">
-                <span class="text-charcoal-accent">//</span> Projects
-            </h2>
-
-            <!-- Project Cards 3-Column Grid Container -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-                <!-- Project Card 1: 3D-Sword (2023) -->
-                <!-- Applied Glassmorphism styling with increased shadow depth -->
-                <a href="[LINK_TO_PROJECT_1_DEMO]" target="_blank" class="block group glass-card bg-card-bg rounded-xl shadow-xl hover:shadow-2xl hover:shadow-charcoal-accent/70 transition-all duration-300 transform hover:scale-[1.01]">
-
-                    <!-- Aspect Ratio Container (3:2 ratio preserved) -->
-                    <div class="w-full aspect-ratio-box aspect-w-3 aspect-h-2 border-b border-dark-border rounded-t-xl overflow-hidden">
-
-                        <div class="absolute inset-0 p-2">
-                            <div class="w-full h-full rounded-lg relative overflow-hidden">
-
-                                <!-- The Video element - FIXED PATH -->
-                                <video src="./image/SwordFight.mp4"
-                                       autoplay loop muted playsinline
-                                       poster="https://placehold.co/600x400/DDEEEE/333333?text=Video+Loading..."
-                                       class="w-full h-full object-cover">
-                                    Your browser does not support the video tag.
-                                </video>
-
-                                <!-- Duration and Tech Stack Bottom Bar -->
-                                <div class="absolute bottom-0 left-0 right-0 py-0 px-1 flex justify-center space-x-12 text-xs rounded-b-lg z-10 bg-card-bg/80 border-t border-dark-border">
-                                    <div class="flex space-x-8">
-                                        <span class="flex items-center text-project-meta font-medium whitespace-nowrap">
-                                            <!-- FIXED: Adjusted to 3.5 for smaller size -->
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="meta-icon mr-1 w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                                            6 Months
-                                        </span>
-                                        <span class="flex items-center text-project-meta font-medium">
-                                            <!-- FIXED PATH -->
-                                            <img src="./image/UnrealEngine.svg" onerror="this.onerror=null; this.src='https://placehold.co/16x16/F0F0F0/333333?text=UE';" class="meta-icon mr-1 w-3.5 h-3.5" alt="Unreal Engine Logo">
-                                            UE 4.27 (C++ & Blueprint)
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Text Content Area: Padding reduced from p-6 to py-4 px-6 -->
-                    <div class="py-4 px-6">
-                        <div class="flex justify-between items-start mb-3">
-                            <div>
-                                <h3 class="text-xl font-heading font-bold text-text-default group-hover:text-charcoal-accent transition duration-300">
-                                    3D-Sword (2023)
-                                </h3>
-                                <span class="text-sm text-project-meta">Gameplay Programmer</span>
-                            </div>
-                            <!-- Arrow Icon -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-charcoal-accent flex-shrink-0 ml-4 group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                        </div>
-                        <p class="text-sm text-project-meta">
-                            This project is a take on the Space Shooter genre. I developed my own ECS and used the Wave Function Collapse algorithm as a background generator.
-                        </p>
-                    </div>
+            <!-- Navigation Buttons (Mimicking the image style) -->
+            <div class="flex space-x-6">
+                <a href="#projects" class="border border-charcoal-accent px-6 py-3 font-semibold text-sm hover:bg-charcoal-accent hover:text-bg-primary transition duration-200 uppercase">
+                    GAMES
                 </a>
-
-                <!-- Project Card 2: Game Jam Project (2022) -->
-                <!-- Applied Glassmorphism styling with increased shadow depth -->
-                <a href="[LINK_TO_PROJECT_2_DEMO]" target="_blank" class="block group glass-card bg-card-bg rounded-xl shadow-xl hover:shadow-2xl hover:shadow-charcoal-accent/70 transition-all duration-300 transform hover:scale-[1.01]">
-
-                    <!-- Aspect Ratio Container (3:2 ratio preserved) -->
-                    <div class="w-full aspect-ratio-box aspect-w-3 aspect-h-2 border-b border-dark-border rounded-t-xl overflow-hidden">
-
-                        <div class="absolute inset-0 p-2">
-                            <div class="w-full h-full bg-[url('https://placehold.co/600x400/333333/AAAAAA?text=Project+Screenshot+2')] bg-cover bg-center rounded-lg relative">
-
-                                <!-- Duration and Tech Stack Bottom Bar -->
-                                <div class="absolute bottom-0 left-0 right-0 py-0 px-1 flex justify-center space-x-12 text-xs rounded-b-lg bg-card-bg/80 border-t border-dark-border">
-                                    <div class="flex space-x-8">
-                                        <span class="flex items-center text-project-meta font-medium whitespace-nowrap">
-                                            <!-- FIXED: Adjusted to 3.5 for smaller size -->
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="meta-icon mr-1 w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                                            1 Week
-                                        </span>
-                                        <span class="flex items-center text-project-meta font-medium">
-                                            <!-- FIXED PATH -->
-                                            <img src="./image/UnrealEngine.svg" onerror="this.onerror=null; this.src='https://placehold.co/16x16/F0F0F0/333333?text=UE';" class="meta-icon mr-1 w-3.5 h-3.5" alt="Unreal Engine Logo">
-                                            UE 5.5 (C++ & Blueprint)
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Text Content Area: Padding reduced from p-6 to py-4 px-6 -->
-                    <div class="py-4 px-6">
-                        <div class="flex justify-between items-start mb-3">
-                            <div>
-                                <h3 class="text-xl font-heading font-bold text-text-default group-hover:text-charcoal-accent transition duration-300">
-                                    Game Jam Project (2022)
-                                </h3>
-                                <span class="text-sm text-project-meta">Gameplay Programmer</span>
-                            </div>
-                            <!-- Arrow Icon -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-charcoal-accent flex-shrink-0 ml-4 group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                        </div>
-                        <p class="text-sm text-project-meta">
-                            This project is a Bomberbots clone made in Lua using the Löve2D framwork, that my classmate David Bång and I worked on while studying at FutureGames.
-                        </p>
-                    </div>
+                <a href="#projects" class="bg-charcoal-accent text-bg-primary px-6 py-3 font-semibold text-sm hover:bg-text-default transition duration-200 uppercase">
+                    PROJECTS
                 </a>
-
-                <!-- Project Card 3: NEW PROJECT 3 (Placeholder) -->
-                <a href="[LINK_TO_PROJECT_3_DEMO]" target="_blank" class="block group glass-card bg-card-bg rounded-xl shadow-xl hover:shadow-2xl hover:shadow-charcoal-accent/70 transition-all duration-300 transform hover:scale-[1.01]">
-
-                    <!-- Aspect Ratio Container (3:2 ratio preserved) -->
-                    <div class="w-full aspect-ratio-box aspect-w-3 aspect-h-2 border-b border-dark-border rounded-t-xl overflow-hidden">
-
-                        <div class="absolute inset-0 p-2">
-                            <div class="w-full h-full bg-[url('https://placehold.co/600x400/AAAAAA/333333?text=Project+Screenshot+3')] bg-cover bg-center rounded-lg relative">
-
-                                <!-- Duration and Tech Stack Bottom Bar -->
-                                <div class="absolute bottom-0 left-0 right-0 py-0 px-1 flex justify-center space-x-12 text-xs rounded-b-lg bg-card-bg/80 border-t border-dark-border">
-                                    <div class="flex space-x-8">
-                                        <span class="flex items-center text-project-meta font-medium whitespace-nowrap">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="meta-icon mr-1 w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                                            9 Months
-                                        </span>
-                                        <span class="flex items-center text-project-meta font-medium">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="meta-icon mr-1 w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" stroke="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><path d="M7 16V8h4V4l4 4-4 4v4h-4z"></path></svg>
-                                            Unity (C#)
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Text Content Area: Padding reduced from p-6 to py-4 px-6 -->
-                    <div class="py-4 px-6">
-                        <div class="flex justify-between items-start mb-3">
-                            <div>
-                                <h3 class="text-xl font-heading font-bold text-text-default group-hover:text-charcoal-accent transition duration-300">
-                                    New Project 3 (2024)
-                                </h3>
-                                <span class="text-sm text-project-meta">Game Designer</span>
-                            </div>
-                            <!-- Arrow Icon -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-charcoal-accent flex-shrink-0 ml-4 group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                        </div>
-                        <p class="text-sm text-project-meta">
-                            Placeholder description for your third major project. Focus on design principles and innovative mechanics used in this project.
-                        </p>
-                    </div>
-                </a>
-
-                <!-- Project Card 4: NEW PROJECT 4 (Placeholder) -->
-                <a href="[LINK_TO_PROJECT_4_DEMO]" target="_blank" class="block group glass-card bg-card-bg rounded-xl shadow-xl hover:shadow-2xl hover:shadow-charcoal-accent/70 transition-all duration-300 transform hover:scale-[1.01]">
-
-                    <!-- Aspect Ratio Container (3:2 ratio preserved) -->
-                    <div class="w-full aspect-ratio-box aspect-w-3 aspect-h-2 border-b border-dark-border rounded-t-xl overflow-hidden">
-
-                        <div class="absolute inset-0 p-2">
-                            <div class="w-full h-full bg-[url('https://placehold.co/600x400/333333/FFFFFF?text=Project+Screenshot+4')] bg-cover bg-center rounded-lg relative">
-
-                                <!-- Duration and Tech Stack Bottom Bar -->
-                                <div class="absolute bottom-0 left-0 right-0 py-0 px-1 flex justify-center space-x-12 text-xs rounded-b-lg bg-card-bg/80 border-t border-dark-border">
-                                    <div class="flex space-x-8">
-                                        <span class="flex items-center text-project-meta font-medium whitespace-nowrap">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="meta-icon mr-1 w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                                            2 Weeks
-                                        </span>
-                                        <span class="flex items-center text-project-meta font-medium">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="meta-icon mr-1 w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" stroke="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.74 1.74a6 6 0 1 0 5.46 5.46z" /><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.74-1.74a6 6 0 1 0-5.46-5.46z" /></svg>
-                                            HTML/Tailwind
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Text Content Area: Padding reduced from p-6 to py-4 px-6 -->
-                    <div class="py-4 px-6">
-                        <div class="flex justify-between items-start mb-3">
-                            <div>
-                                <h3 class="text-xl font-heading font-bold text-text-default group-hover:text-charcoal-accent transition duration-300">
-                                    Portfolio App (2025)
-                                </h3>
-                                <span class="text-sm text-project-meta">Web Developer</span>
-                            </div>
-                            <!-- Arrow Icon -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-charcoal-accent flex-shrink-0 ml-4 group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                        </div>
-                        <p class="text-sm text-project-meta">
-                            This is a meta-project showcasing clean UI/UX design, modern layout techniques (like Glassmorphism), and full responsiveness using Tailwind CSS.
-                        </p>
-                    </div>
+                <a href="#background" class="border border-charcoal-accent px-6 py-3 font-semibold text-sm hover:bg-charcoal-accent hover:text-bg-primary transition duration-200 uppercase">
+                    BLOG
                 </a>
             </div>
         </section>
 
+
+        <!-- Secondary Content Container (Starts after the Hero section) -->
+        <div class="container mx-auto px-6 lg:px-24 py-12">
+
+            <!-- Projects Section (MOVED UP) -->
+            <section id="projects" class="mb-20 pt-10">
+                <h2 class="text-3xl font-heading font-bold text-text-default mb-8 border-b border-dark-border pb-1 inline-block">
+                    <span class="text-charcoal-accent">//</span> Projects
+                </h2>
+
+                <!-- Project Cards 3-Column Grid Container -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                    <!-- Project Card 1: 3D-Sword (2023) -->
+                    <!-- Applied Glassmorphism styling with increased shadow depth -->
+                    <a href="Legacy_of_Blade.html" target="_blank" class="block group glass-card bg-card-bg rounded-xl shadow-xl hover:shadow-2xl hover:shadow-charcoal-accent/70 transition-all duration-300 transform hover:scale-[1.01]">
+
+                        <!-- Aspect Ratio Container (3:2 ratio preserved) -->
+                        <div class="w-full aspect-ratio-box aspect-w-3 aspect-h-2 border-b border-dark-border rounded-t-xl overflow-hidden">
+
+                            <div class="absolute inset-0 p-2">
+                                <div class="w-full h-full rounded-lg relative overflow-hidden">
+
+                                    <!-- The Video element - FIXED PATH -->
+                                    <video src="./image/SwordFight.mp4"
+                                           autoplay loop muted playsinline
+                                           poster="https://placehold.co/600x400/DDEEEE/333333?text=Video+Loading..."
+                                           class="w-full h-full object-cover">
+                                        Your browser does not support the video tag.
+                                    </video>
+
+                                    <!-- Duration and Tech Stack Bottom Bar -->
+                                    <div class="absolute bottom-0 left-0 right-0 py-0 px-1 flex justify-center space-x-12 text-xs rounded-b-lg z-10 bg-card-bg/80 border-t border-dark-border">
+                                        <div class="flex space-x-8">
+                                            <span class="flex items-center text-project-meta font-medium whitespace-nowrap">
+                                                <!-- FIXED: Adjusted to 3.5 for smaller size -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="meta-icon mr-1 w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                                6 Months
+                                            </span>
+                                            <span class="flex items-center text-project-meta font-medium">
+                                                <!-- FIXED PATH -->
+                                                <img src="./image/UnrealEngine.svg" onerror="this.onerror=null; this.src='https://placehold.co/16x16/F0F0F0/333333?text=UE';" class="meta-icon mr-1 w-3.5 h-3.5" alt="Unreal Engine Logo">
+                                                UE 4.27 (C++ & Blueprint)
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Text Content Area: Padding reduced from p-6 to py-4 px-6 -->
+                        <div class="py-4 px-6">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h3 class="text-xl font-heading font-bold text-text-default group-hover:text-charcoal-accent transition duration-300">
+                                        3D-Sword (2023)
+                                    </h3>
+                                    <span class="text-sm text-project-meta">Gameplay Programmer</span>
+                                </div>
+                                <!-- Arrow Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-charcoal-accent flex-shrink-0 ml-4 group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </div>
+                            <p class="text-sm text-project-meta">
+                                This project is a take on the Space Shooter genre. I developed my own ECS and used the Wave Function Collapse algorithm as a background generator.
+                            </p>
+                        </div>
+                    </a>
+
+                    <!-- Project Card 2: Game Jam Project (2022) -->
+                    <!-- Applied Glassmorphism styling with increased shadow depth -->
+                    <a href="[LINK_TO_PROJECT_2_DEMO]" target="_blank" class="block group glass-card bg-card-bg rounded-xl shadow-xl hover:shadow-2xl hover:shadow-charcoal-accent/70 transition-all duration-300 transform hover:scale-[1.01]">
+
+                        <!-- Aspect Ratio Container (3:2 ratio preserved) -->
+                        <div class="w-full aspect-ratio-box aspect-w-3 aspect-h-2 border-b border-dark-border rounded-t-xl overflow-hidden">
+
+                            <div class="absolute inset-0 p-2">
+                                <div class="w-full h-full bg-[url('https://placehold.co/600x400/333333/AAAAAA?text=Project+Screenshot+2')] bg-cover bg-center rounded-lg relative">
+
+                                    <!-- Duration and Tech Stack Bottom Bar -->
+                                    <div class="absolute bottom-0 left-0 right-0 py-0 px-1 flex justify-center space-x-12 text-xs rounded-b-lg bg-card-bg/80 border-t border-dark-border">
+                                        <div class="flex space-x-8">
+                                            <span class="flex items-center text-project-meta font-medium whitespace-nowrap">
+                                                <!-- FIXED: Adjusted to 3.5 for smaller size -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="meta-icon mr-1 w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                                1 Week
+                                            </span>
+                                            <span class="flex items-center text-project-meta font-medium">
+                                                <!-- FIXED PATH -->
+                                                <img src="./image/UnrealEngine.svg" onerror="this.onerror=null; this.src='https://placehold.co/16x16/F0F0F0/333333?text=UE';" class="meta-icon mr-1 w-3.5 h-3.5" alt="Unreal Engine Logo">
+                                                UE 5.5 (C++ & Blueprint)
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Text Content Area: Padding reduced from p-6 to py-4 px-6 -->
+                        <div class="py-4 px-6">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h3 class="text-xl font-heading font-bold text-text-default group-hover:text-charcoal-accent transition duration-300">
+                                        Game Jam Project (2022)
+                                    </h3>
+                                    <span class="text-sm text-project-meta">Gameplay Programmer</span>
+                                </div>
+                                <!-- Arrow Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-charcoal-accent flex-shrink-0 ml-4 group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </div>
+                            <p class="text-sm text-project-meta">
+                                This project is a Bomberbots clone made in Lua using the Löve2D framwork, that my classmate David Bång and I worked on while studying at FutureGames.
+                            </p>
+                        </div>
+                    </a>
+
+                    <!-- Project Card 3: NEW PROJECT 3 (Placeholder) -->
+                    <a href="[LINK_TO_PROJECT_3_DEMO]" target="_blank" class="block group glass-card bg-card-bg rounded-xl shadow-xl hover:shadow-2xl hover:shadow-charcoal-accent/70 transition-all duration-300 transform hover:scale-[1.01]">
+
+                        <!-- Aspect Ratio Container (3:2 ratio preserved) -->
+                        <div class="w-full aspect-ratio-box aspect-w-3 aspect-h-2 border-b border-dark-border rounded-t-xl overflow-hidden">
+
+                            <div class="absolute inset-0 p-2">
+                                <div class="w-full h-full bg-[url('https://placehold.co/600x400/AAAAAA/333333?text=Project+Screenshot+3')] bg-cover bg-center rounded-lg relative">
+
+                                    <!-- Duration and Tech Stack Bottom Bar -->
+                                    <div class="absolute bottom-0 left-0 right-0 py-0 px-1 flex justify-center space-x-12 text-xs rounded-b-lg bg-card-bg/80 border-t border-dark-border">
+                                        <div class="flex space-x-8">
+                                            <span class="flex items-center text-project-meta font-medium whitespace-nowrap">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="meta-icon mr-1 w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                                9 Months
+                                            </span>
+                                            <span class="flex items-center text-project-meta font-medium">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="meta-icon mr-1 w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" stroke="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><path d="M7 16V8h4V4l4 4-4 4v4h-4z"></path></svg>
+                                                Unity (C#)
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Text Content Area: Padding reduced from p-6 to py-4 px-6 -->
+                        <div class="py-4 px-6">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h3 class="text-xl font-heading font-bold text-text-default group-hover:text-charcoal-accent transition duration-300">
+                                        New Project 3 (2024)
+                                    </h3>
+                                    <span class="text-sm text-project-meta">Game Designer</span>
+                                </div>
+                                <!-- Arrow Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-charcoal-accent flex-shrink-0 ml-4 group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </div>
+                            <p class="text-sm text-project-meta">
+                                Placeholder description for your third major project. Focus on design principles and innovative mechanics used in this project.
+                            </p>
+                        </div>
+                    </a>
+
+                    <!-- Project Card 4: NEW PROJECT 4 (Placeholder) -->
+                    <a href="[LINK_TO_PROJECT_4_DEMO]" target="_blank" class="block group glass-card bg-card-bg rounded-xl shadow-xl hover:shadow-2xl hover:shadow-charcoal-accent/70 transition-all duration-300 transform hover:scale-[1.01]">
+
+                        <!-- Aspect Ratio Container (3:2 ratio preserved) -->
+                        <div class="w-full aspect-ratio-box aspect-w-3 aspect-h-2 border-b border-dark-border rounded-t-xl overflow-hidden">
+
+                            <div class="absolute inset-0 p-2">
+                                <div class="w-full h-full bg-[url('https://placehold.co/600x400/333333/FFFFFF?text=Project+Screenshot+4')] bg-cover bg-center rounded-lg relative">
+
+                                    <!-- Duration and Tech Stack Bottom Bar -->
+                                    <div class="absolute bottom-0 left-0 right-0 py-0 px-1 flex justify-center space-x-12 text-xs rounded-b-lg bg-card-bg/80 border-t border-dark-border">
+                                        <div class="flex space-x-8">
+                                            <span class="flex items-center text-project-meta font-medium whitespace-nowrap">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="meta-icon mr-1 w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                                2 Weeks
+                                            </span>
+                                            <span class="flex items-center text-project-meta font-medium">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="meta-icon mr-1 w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" stroke="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.74 1.74a6 6 0 1 0 5.46 5.46z" /><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.74-1.74a6 6 0 1 0-5.46-5.46z" /></svg>
+                                                HTML/Tailwind
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Text Content Area: Padding reduced from p-6 to py-4 px-6 -->
+                        <div class="py-4 px-6">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h3 class="text-xl font-heading font-bold text-text-default group-hover:text-charcoal-accent transition duration-300">
+                                        Portfolio App (2025)
+                                    </h3>
+                                    <span class="text-sm text-project-meta">Web Developer</span>
+                                </div>
+                                <!-- Arrow Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-charcoal-accent flex-shrink-0 ml-4 group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </div>
+                            <p class="text-sm text-project-meta">
+                                This is a meta-project showcasing clean UI/UX design, modern layout techniques (like Glassmorphism), and full responsiveness using Tailwind CSS.
+                            </p>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Skills & Tools Section -->
+            <section id="skills" class="mb-20">
+                <h2 class="text-3xl font-heading font-bold text-text-default mb-8 border-b border-dark-border pb-1 inline-block">
+                    <span class="text-charcoal-accent">//</span> Skills & Tools
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10 text-text-default">
+
+                    <!-- Core Languages -->
+                    <div class="glass-card bg-card-bg p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-heading font-bold text-charcoal-accent mb-4 border-b border-dark-border pb-2">Core Languages</h3>
+                        <ul class="space-y-2 list-disc list-inside text-project-meta">
+                            <li><strong class="text-text-default">C++</strong></li>
+                            <li><strong class="text-text-default">C</strong></li>
+                            <li><strong class="text-text-default">Python</strong></li>
+                        </ul>
+                    </div>
+
+                    <!-- Maths & Physics -->
+                    <div class="glass-card bg-card-bg p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-heading font-bold text-charcoal-accent mb-4 border-b border-dark-border pb-2">Maths & Physics</h3>
+                        <ul class="space-y-2 list-disc list-inside text-project-meta">
+                            <li><strong class="text-text-default">3D Maths</strong></li>
+                            <li><strong class="text-text-default">Linear Algebra</strong></li>
+                            <li><strong class="text-text-default">Game Physics & Dynamics</strong></li>
+                            <li><strong class="text-text-default">Movements & Kinematics</strong></li>
+                        </ul>
+                    </div>
+
+                    <!-- Development Tools -->
+                    <div class="glass-card bg-card-bg p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-heading font-bold text-charcoal-accent mb-4 border-b border-dark-border pb-2">Development Tools</h3>
+                        <ul class="space-y-2 list-disc list-inside text-project-meta">
+                            <li><strong class="text-text-default">Unreal Engine</strong></li>
+                            <li><strong class="text-text-default">Visual Studio</strong></li>
+                            <li><strong class="text-text-default">GitHub</strong></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Background Section (Education) -->
+            <section id="background" class="mb-20">
+                <h2 class="text-3xl font-heading font-bold text-text-default mb-8 border-b border-dark-border pb-1 inline-block">
+                    <span class="text-charcoal-accent">//</span> Education & Background
+                </h2>
+
+                <p class="text-md leading-relaxed text-project-meta max-w-4xl mb-10">
+                    My commitment to becoming a Gameplay Programmer is founded on a focused, intensive, and self-directed curriculum. My learning is directly validated by the successful implementation of core mechanics across my portfolio projects.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10 text-text-default">
+
+                    <!-- Core Technical Coursework -->
+                    <div class="glass-card bg-card-bg p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-heading font-bold text-charcoal-accent mb-4 border-b border-dark-border pb-2">Core Technical Coursework</h3>
+                        <ul class="space-y-4 list-none text-project-meta">
+                            <li>
+                                <strong class="text-text-default block">Unreal Engine C++: Game Developer Specialization</strong> (Udemy, 2024)
+                                <span class="block text-sm">Focus: Applied C++ development for game mechanics, custom components, and mastering core engine architecture. (Principles learned are directly transferable to Unreal Engine 5.)</span>
+                            </li>
+                            <li>
+                                <strong class="text-text-default block">CS50x: Introduction to Computer Science</strong> (Harvard University via edX, 2024)
+                                <span class="block text-sm">Focus: Foundational computer science concepts, data structures, and algorithms, providing a solid base for performant and scalable code.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Self-Directed Technical Mastery -->
+                    <div class="glass-card bg-card-bg p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-heading font-bold text-charcoal-accent mb-4 border-b border-dark-border pb-2">Self-Directed Technical Mastery</h3>
+                        <p class="text-sm mb-4">Demonstrated mastery of complex systems through practical application, including:</p>
+                        <ul class="space-y-2 list-disc list-inside text-project-meta">
+                            <li><strong class="text-text-default">3D Math & Linear Algebra:</strong> Applied in custom camera controls, object transformations, and projectile motion systems.</li>
+                            <li><strong class="text-text-default">Game Physics & Dynamics:</strong> Expertise in Rigid Body Dynamics, Collision Detection, and advanced Line Tracing techniques.</li>
+                            <li><strong class="text-text-default">Modern C++ and Performance:</strong> Focused on writing clean, optimized C++ code for game logic and system efficiency.</li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <!-- Practical Experience & Achievements (Full Width below the grid) -->
+                <div class="mt-10 glass-card bg-card-bg p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-heading font-bold text-charcoal-accent mb-4 border-b border-dark-border pb-2">Practical Experience & Achievements</h3>
+                    <ul class="space-y-2 list-disc list-inside text-project-meta">
+                        <li><strong class="text-text-default">Game Jam Completion (2025):</strong> Successfully executed, developed, and shipped a complete game project under strict time constraints, demonstrating the ability to scope and deliver working features.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- NEW ABOUT ME SECTION (Moved from Hero) -->
+            <section id="about-me" class="mb-20 bg-text-default/5 p-8 rounded-xl">
+                <div class="text-center">
+                    <!-- New wrapper for centering -->
+                    <h2 class="text-3xl font-heading font-bold text-text-default mb-8 border-b border-dark-border pb-1 inline-block">
+                        <span class="text-charcoal-accent">//</span> About Me
+                    </h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+
+                    <!-- Left Column (Profile Image) -->
+                    <div class="col-span-1 flex justify-center items-center">
+                        <!-- Profile Image (Circular Shape) -->
+                        <div class="w-48 h-48 rounded-full overflow-hidden profile-border transform hover:scale-105 transition-transform duration-300 flex-shrink-0">
+                            <img src="./profile.jpeg" onerror="this.onerror=null; this.src='https://placehold.co/224x224/F0F0F0/333333?text=PROFILE+ERROR';" alt="Profile Photo" class="w-full h-full object-cover profile-image-effect">
+                        </div>
+                    </div>
+
+                    <!-- Right Column (Bio Text and Quick Facts) -->
+                    <div class="col-span-1 md:col-span-2 text-center md:text-left">
+                        <p class="text-md leading-relaxed text-project-meta mb-4">
+                            I am a passionate and highly motivated Gameplay Programmer dedicated to the engineering of robust and engaging game mechanics. My journey into game development is defined by intense, self-directed learning and a commitment to mastering the most technically demanding aspects of the craft.
+                        </p>
+                        <p class="text-md leading-relaxed text-project-meta mb-4">
+                            My focus is on C++ systems and solving the complex mathematical and physics challenges that drive realistic player experience—from character kinematics and collision resolution to custom AI state management.
+                        </p>
+                        <p class="text-md leading-relaxed text-project-meta mb-4">
+                            I believe the core of great gameplay lies in clean, efficient code. I thrive on translating theoretical concepts (like Linear Algebra and Rigid Body Dynamics) into high-performance, polished interactions.
+                        </p>
+                        <p class="text-md leading-relaxed text-project-meta mb-6">
+                            I am currently seeking a role where I can contribute a strong C++ foundation and an unyielding drive for technical problem-solving to a collaborative team environment.
+                        </p>
+
+                        <div class="glass-card bg-card-bg p-4 rounded-xl shadow-sm border border-dark-border">
+                            <strong class="text-sm text-charcoal-accent block mb-2 border-b border-dark-border pb-1">Quick Facts:</strong>
+                            <ul class="space-y-1 text-sm text-project-meta">
+                                <li><strong class="text-text-default">Core Strength:</strong> C++ Development & Systems Architecture (Unreal Engine).</li>
+                                <li><strong class="text-text-default">Always Learning:</strong> Driven by a constant pursuit of advanced technical knowledge, demonstrated through self-mastery of CS foundations and game physics.</li>
+                                <li><strong class="text-text-default">Goal:</strong> To build the core mechanics that define a game's feel and responsiveness.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </div>
     </main>
 
     <!-- Footer Placeholder (Simple, minimal) -->
