@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ankit Dabas | Gameplay Programmer</title>
+    <!-- Load Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Configure Tailwind for custom colors and font (NEW DESIGN: Glassmorphism Light) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // GLASSMORHISM LIGHT COLORS
+                        'bg-primary': '#F9F9F9', // Soft White background
+                        'text-default': '#2A2A2A', // Dark Gray Text
+                        'charcoal-accent': '#333333', // Dark Charcoal Accent Color
+                        'card-bg': 'rgba(255, 255, 255, 0.5)', // Transparent White for Glass
+                        'dark-border': '#E0E0E0', // Light Gray Border
+                        'project-meta': '#555555', // Mid Gray for metadata
+                    },
+                    fontFamily: {
+                        // Use Poppins for everything for a bold, unified look
+                        sans: ['Poppins', 'sans-serif'],
+                        heading: ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Import Poppins (Wght 700, 400) for the new theme */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+        /* Custom style for the profile image border (NOW CIRCULAR) */
+        .profile-border {
+            border: 4px solid var(--tw-colors-charcoal-accent);
+            /* Increased shadow for "more depth" effect */
+            box-shadow: 0 0 45px rgba(51, 51, 51, 0.8); /* MORE DEPTH */
+        }
+
+        /* Applying Glassmorphism Effect to Cards */
+        .glass-card {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.25); /* Increased initial shadow for depth */
+        }
+
+        /* New class for the social button appearance and hover effect */
+        .social-btn {
+            color: var(--tw-colors-text-default);
+            padding: 0.375rem; /* p-1.5 equivalent */
+            border-radius: 9999px; /* rounded-full equivalent */
+            transition: all 0.2s ease-in-out, transform 0.2s ease-in-out; /* Added transform transition */
+            /* Added to make IMG children inherit colors better */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transform: scale(1); /* Base state */
+        }
+
+            .social-btn:hover {
+                color: var(--tw-colors-bg-primary); /* Text color becomes white */
+                background-color: var(--tw-colors-charcoal-accent); /* Background becomes charcoal */
+                /* INCREASED SHADOW OPACITY TO ~70% */
+                filter: drop-shadow(0 4px 6px rgba(51, 51, 51, 0.7));
+                transform: scale(1.15); /* Zoom effect */
+            }
+
+        /* --- IMAGE EFFECT (Black & White to Color on Hover) --- */
+        .profile-image-effect {
+            filter: grayscale(100%);
+            transition: filter 0.5s ease-in-out;
+        }
+
+            .profile-image-effect:hover {
+                filter: grayscale(0%);
+            }
+
+        /* --- PROJECT GRID LAYOUT (Back to 2-Column Responsive) --- */
+
+        /* Utility classes for responsive aspect ratio (3:2) */
+        .aspect-w-3 {
+            --tw-aspect-w: 3;
+            --tw-aspect-h: 2;
+            padding-bottom: calc(var(--tw-aspect-h) / var(--tw-aspect-w) * 100%);
+        }
+
+        .aspect-h-2 {
+            --tw-aspect-h: 2;
+        }
+
+        .aspect-ratio-box {
+            position: relative;
+            height: 0;
+        }
+
+        /* Ensure IMG icons inherit color correctly */
+        .social-btn img {
+            filter: grayscale(100%);
+            transition: filter 0.2s ease-in-out;
+        }
+
+        .social-btn:hover img {
+            filter: grayscale(0%);
+        }
+
+        /* Custom width for the line to span the center of the social icons */
+        .social-line-width {
+            /* Reduced width to 100px for a tighter fit */
+            width: 150px;
+        }
+
+        /* Custom gradient for the new Hero section background */
+        .hero-gradient {
+            background: linear-gradient(180deg, rgba(249, 249, 249, 1) 0%, rgba(230, 230, 230, 1) 100%);
+        }
+
+        /* Custom style for the tapering line */
+        .tapering-line {
+            height: 2px; /* Set a fixed thickness for the line */
+            width: 80%; /* CHANGED TO 80% WIDTH */
+            /* Create a linear gradient: transparent -> charcoal -> transparent */
+            background: linear-gradient(to right, rgba(51, 51, 51, 0) 0%, rgba(51, 51, 51, 0.7) 40%, rgba(51, 51, 51, 0.7) 60%, rgba(51, 51, 51, 0) 100%);
+        }
+
+        /* Ensure the detailed project page content takes up full height */
+        #project-detail-container {
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<!-- Apply new primary colors to the body -->
+<body class="bg-bg-primary text-text-default font-sans antialiased">
+
+    <!-- Header & Navigation Bar (Absolute position to not interfere with hero centering) -->
+    <header class="container mx-auto px-6 lg:px-24 py-6 absolute top-0 left-0 right-0 z-10">
+        <!-- space-x-4 changed to space-x-12 -->
+        <div class="flex justify-end items-center space-x-12">
+
+            <!-- MODIFIED: Wrapper for social icons with centered bottom line -->
+            <!-- items-end maintains alignment to the right -->
+            <div class="flex flex-col items-end">
+                <!-- Social Icons (Charcoal on Hover) -->
+                <div class="flex items-center space-x-2 pb-1">
+                    <a href="https://github.com/iankitdabas" target="_blank" class="social-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7a3.37 3.37 0 0 0-.94 2.61V19"></path></svg>
+                    </a>
+                    <a href="https://linkedin.com/in/iankitdabas" target="_blank" class="social-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                    </a>
+                    <!-- Itch.io Icon using an IMG tag for external SVG - FIXED PATH -->
+                    <a href="https://ankitdabas.itch.io/" target="_blank" class="social-btn">
+                        <!-- The IMG tag points to the local SVG file -->
+                        <img src="./image/itch.svg"
+                             onerror="this.onerror=null; this.src='https://placehold.co/24x24/F9F9F9/333333?text=itch'; this.style.filter='none';"
+                             alt="itch.io"
+                             class="w-7 h-7 object-contain">
+                    </a>
+                    <!-- Instagram Icon using an IMG tag for local SVG - NEW FIX -->
+                    <a href="https://instagram.com/iankitdabas" target="_blank" class="social-btn">
+                        <img src="./image/instagram.svg"
+                             onerror="this.onerror=null; this.src='https://placehold.co/24x24/F9F9F9/333333?text=Insta'; this.style.filter='none';"
+                             alt="Instagram"
+                             class="w-6 h-6 object-contain">
+                    </a>
+                </div>
+                <!-- Short, Thin Line - Now Centered beneath the icons -->
+                <div class="social-line-width border-b border-charcoal-accent mx-auto"></div>
+            </div>
+
+            <!-- Resume Button (Charcoal Accent Border, spaced 4 units away from the box) -->
+            <a href="[LINK_TO_YOUR_RESUME.PDF]" target="_blank" class="text-charcoal-accent border-2 border-charcoal-accent px-4 py-2 font-semibold hover:bg-charcoal-accent hover:text-bg-primary transition duration-200 text-sm tracking-widest uppercase hover:shadow-lg hover:shadow-charcoal-accent/70">
+                Resume ↓
+            </a>
+        </div>
+    </header>
+
+    <!-- Project Detail Container (REMOVED - Single page routing is gone) -->
+    <!-- Main Content Area (Shown by default) -->
+    <main id="main-content-area">
+
+        <!-- NEW HERO SECTION (Full screen, centered text) -->
+        <section id="hero" class="hero-gradient min-h-screen flex flex-col items-center justify-center text-center px-6 py-20 main-content-section">
+            <h1 class="text-5xl md:text-5xl font-heading font-bold text-text-default mb-4 max-w-4xl">
+                Hi, I am <span class="text-charcoal-accent">Ankit Dabas</span>
+            </h1>
+            <p class="text-xl md:text-xl text-project-meta mb-6">
+                I'm a Gameplay Programmer!
+            </p>
+
+            <!-- Tapering Line Separator -->
+            <div class="tapering-line mb-10 mx-auto"></div>
+
+            <!-- Navigation Buttons (Mimicking the image style) -->
+            <div class="flex space-x-6">
+                <a href="#projects" class="border border-charcoal-accent px-6 py-3 font-semibold text-sm hover:bg-charcoal-accent hover:text-bg-primary transition duration-200 uppercase">
+                    GAMES
+                </a>
+                <a href="#projects" class="bg-charcoal-accent text-bg-primary px-6 py-3 font-semibold text-sm hover:bg-text-default transition duration-200 uppercase">
+                    PROJECTS
+                </a>
+                <a href="#background" class="border border-charcoal-accent px-6 py-3 font-semibold text-sm hover:bg-charcoal-accent hover:text-bg-primary transition duration-200 uppercase">
+                    BLOG
+                </a>
+            </div>
+        </section>
+
+
+        <!-- Secondary Content Container (Starts after the Hero section) -->
+        <div class="container mx-auto px-6 lg:px-24 py-12">
+
+            <!-- Projects Section (MOVED UP) -->
+            <section id="projects" class="mb-20 pt-10 main-content-section">
+                <h2 class="text-3xl font-heading font-bold text-text-default mb-8 border-b border-dark-border pb-1 inline-block">
+                    <span class="text-charcoal-accent">//</span> Projects
+                </h2>
+
+                <!-- Project Cards 3-Column Grid Container -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                    <!-- Project Card 1: Legacy of Blade -->
+                    <!-- UPDATED TITLE and LINK to external HTML file -->
+                    <a href="projects/Legacy_of_Blade.html" class="block group glass-card bg-card-bg rounded-xl shadow-xl hover:shadow-2xl hover:shadow-charcoal-accent/70 transition-all duration-300 transform hover:scale-[1.01]">
+
+                        <!-- Aspect Ratio Container (3:2 ratio preserved) -->
+                        <div class="w-full aspect-ratio-box aspect-w-3 aspect-h-2 border-b border-dark-border rounded-t-xl overflow-hidden">
+
+                            <div class="absolute inset-0 p-2">
+                                <div class="w-full h-full rounded-lg relative overflow-hidden">
+
+                                    <!-- The Video element - FIXED PATH -->
+                                    <video src="./Video/SwordFight.mp4"
+                                           autoplay loop muted playsinline
+                                           poster="https://placehold.co/600x400/DDEEEE/333333?text=Video+Loading..."
+                                           class="w-full h-full object-cover">
+                                        Your browser does not support the video tag.
+                                    </video>
+
+                                    <!-- Duration and Tech Stack Bottom Bar -->
+                                    <div class="absolute bottom-0 left-0 right-0 py-0 px-1 flex justify-center space-x-12 text-xs rounded-b-lg z-10 bg-card-bg/80 border-t border-dark-border">
+                                        <div class="flex space-x-8">
+                                            <span class="flex items-center text-project-meta font-medium whitespace-nowrap">
+                                                <!-- FIXED: Adjusted to 3.5 for smaller size -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="meta-icon mr-1 w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                                6 Months
+                                            </span>
+                                            <span class="flex items-center text-project-meta font-medium">
+                                                <!-- FIXED PATH -->
+                                                <img src="./image/UnrealEngine.svg" onerror="this.onerror=null; this.src='https://placehold.co/16x16/F0F0F0/333333?text=UE';" class="meta-icon mr-1 w-3.5 h-3.5" alt="Unreal Engine Logo">
+                                                UE 4.27 (C++ & Blueprint)
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Text Content Area: Padding reduced from p-6 to py-4 px-6 -->
+                        <div class="py-4 px-6">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h3 class="text-xl font-heading font-bold text-text-default group-hover:text-charcoal-accent transition duration-300">
+                                        Legacy of Blade (2023)
+                                    </h3>
+                                    <span class="text-sm text-project-meta">Gameplay Programmer</span>
+                                </div>
+                                <!-- Arrow Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-charcoal-accent flex-shrink-0 ml-4 group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </div>
+                            <p class="text-sm text-project-meta project-short-desc">
+                                Legacy of Blade is a third-person action combat project I developed in Unreal Engine 4.27 using C++ and Blueprints. The focus was to build a responsive melee combat system and an axe recall mechanic inspired by God of War, while showcasing AI behavior, player interaction, and technical gameplay systems.
+                            </p>
+                        </div>
+                    </a>
+
+                    <!-- Project Card 2: Game Jam Project (2022) -->
+                    <!-- Updated to use simple placeholder link -->
+                    <a href="projects/Game_Jam_Project.html" class="block group glass-card bg-card-bg rounded-xl shadow-xl hover:shadow-2xl hover:shadow-charcoal-accent/70 transition-all duration-300 transform hover:scale-[1.01]">
+
+                        <!-- Aspect Ratio Container (3:2 ratio preserved) -->
+                        <div class="w-full aspect-ratio-box aspect-w-3 aspect-h-2 border-b border-dark-border rounded-t-xl overflow-hidden">
+
+                            <div class="absolute inset-0 p-2">
+                                <div class="w-full h-full bg-[url('https://placehold.co/600x400/333333/AAAAAA?text=Project+Screenshot+2')] bg-cover bg-center rounded-lg relative">
+
+                                    <video src="./Video/GameJam_Short.mp4"
+                                           autoplay loop muted playsinline
+                                           poster="https://placehold.co/600x400/DDEEEE/333333?text=Video+Loading..."
+                                           class="w-full h-full object-cover">
+                                        Your browser does not support the video tag.
+                                    </video>
+
+                                    <!-- Duration and Tech Stack Bottom Bar -->
+                                    <div class="absolute bottom-0 left-0 right-0 py-0 px-1 flex justify-center space-x-12 text-xs rounded-b-lg bg-card-bg/80 border-t border-dark-border">
+                                        <div class="flex space-x-8">
+                                            <span class="flex items-center text-project-meta font-medium whitespace-nowrap">
+                                                <!-- FIXED: Adjusted to 3.5 for smaller size -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="meta-icon mr-1 w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                                1 Week
+                                            </span>
+                                            <span class="flex items-center text-project-meta font-medium">
+                                                <!-- FIXED PATH -->
+                                                <img src="./image/UnrealEngine.svg" onerror="this.onerror=null; this.src='https://placehold.co/16x16/F0F0F0/333333?text=UE';" class="meta-icon mr-1 w-3.5 h-3.5" alt="Unreal Engine Logo">
+                                                UE 5.5 (C++ & Blueprint)
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Text Content Area: Padding reduced from p-6 to py-4 px-6 -->
+                        <div class="py-4 px-6">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h3 class="text-xl font-heading font-bold text-text-default group-hover:text-charcoal-accent transition duration-300">
+                                        Game Jam Project (2022)
+                                    </h3>
+                                    <span class="text-sm text-project-meta">Gameplay Programmer</span>
+                                </div>
+                                <!-- Arrow Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-charcoal-accent flex-shrink-0 ml-4 group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </div>
+                            <p class="text-sm text-project-meta project-short-desc">
+                                This 2D Puzzle Platformer was my entry for the Brackeys Game Jam, built in just one week using Unreal Engine 5 with C++ and Blueprints. The theme was "Risk it for the biscuit," which I implemented as the game's core mechanic.
+                            
+                            </p>
+                        </div>
+                    </a>
+
+                    <!-- Project Card 3: NEW PROJECT 3 (Placeholder) -->
+                    <!-- Updated to use simple placeholder link -->
+                    <a href="projects/CosmicCombat.html" class="block group glass-card bg-card-bg rounded-xl shadow-xl hover:shadow-2xl hover:shadow-charcoal-accent/70 transition-all duration-300 transform hover:scale-[1.01]">
+
+                        <!-- Aspect Ratio Container (3:2 ratio preserved) -->
+                        <div class="w-full aspect-ratio-box aspect-w-3 aspect-h-2 border-b border-dark-border rounded-t-xl overflow-hidden">
+
+                            <div class="absolute inset-0 p-2">
+                                <div class="w-full h-full bg-[url('https://placehold.co/600x400/AAAAAA/333333?text=Project+Screenshot+3')] bg-cover bg-center rounded-lg relative">
+
+                                    <video src="./Video/CosmicCombat_Shot.mp4"
+                                           autoplay loop muted playsinline
+                                           poster="https://placehold.co/600x400/DDEEEE/333333?text=Video+Loading..."
+                                           class="w-full h-full object-cover">
+                                        Your browser does not support the video tag.
+                                    </video>
+
+                                    <!-- Duration and Tech Stack Bottom Bar -->
+                                    <div class="absolute bottom-0 left-0 right-0 py-0 px-1 flex justify-center space-x-12 text-xs rounded-b-lg bg-card-bg/80 border-t border-dark-border">
+                                        <div class="flex space-x-8">
+                                            <span class="flex items-center text-project-meta font-medium whitespace-nowrap">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="meta-icon mr-1 w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                                2 Days
+                                            </span>
+                                            <span class="flex items-center text-project-meta font-medium">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="meta-icon mr-1 w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" stroke="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><path d="M7 16V8h4V4l4 4-4 4v4h-4z"></path></svg>
+                                                Scratch
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Text Content Area: Padding reduced from p-6 to py-4 px-6 -->
+                        <div class="py-4 px-6">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h3 class="text-xl font-heading font-bold text-text-default group-hover:text-charcoal-accent transition duration-300">
+                                        Cosmic Combat (2024)
+                                    </h3>
+                                    <span class="text-sm text-project-meta"></span>
+                                </div>
+                                <!-- Arrow Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-charcoal-accent flex-shrink-0 ml-4 group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </div>
+                            <p class="text-sm text-project-meta project-short-desc">
+                                CosmicCombat is a 2D space shooter I made in Scratch for CS50 over a weekend. Instead of aliens, enemies are numbers—so kids are literally fighting math while playing. It features WASD movement, mouse aiming, two difficulty levels, and endless scoring that keeps going after you beat the main levels.
+                            </p>
+                        </div>
+                    </a>
+
+                    <!-- Project Card 4: NEW PROJECT 4 (Placeholder) -->
+                    <!-- Updated to use simple placeholder link -->
+                    <a href="projects/BouncyPixel.html" class="block group glass-card bg-card-bg rounded-xl shadow-xl hover:shadow-2xl hover:shadow-charcoal-accent/70 transition-all duration-300 transform hover:scale-[1.01]">
+
+                        <!-- Aspect Ratio Container (3:2 ratio preserved) -->
+                        <div class="w-full aspect-ratio-box aspect-w-3 aspect-h-2 border-b border-dark-border rounded-t-xl overflow-hidden">
+
+                            <div class="absolute inset-0 p-2">
+                                <div class="w-full h-full bg-[url('https://placehold.co/600x400/333333/FFFFFF?text=Project+Screenshot+4')] bg-cover bg-center rounded-lg relative">
+
+                                    <video src="./Video/BouncyPixel.mp4"
+                                           autoplay loop muted playsinline
+                                           poster="https://placehold.co/600x400/DDEEEE/333333?text=Video+Loading..."
+                                           class="w-full h-full object-cover">
+                                        Your browser does not support the video tag.
+                                    </video>
+
+                                    <!-- Duration and Tech Stack Bottom Bar -->
+                                    <div class="absolute bottom-0 left-0 right-0 py-0 px-1 flex justify-center space-x-12 text-xs rounded-b-lg z-10 bg-card-bg/80 border-t border-dark-border">
+                                        <div class="flex space-x-8">
+                                            <span class="flex items-center text-project-meta font-medium whitespace-nowrap">
+                                                <!-- FIXED: Adjusted to 3.5 for smaller size -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="meta-icon mr-1 w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                                10 Days
+                                            </span>
+                                            <span class="flex items-center text-project-meta font-medium">
+                                                <!-- FIXED PATH -->
+                                                <img src="./image/UnrealEngine.svg" onerror="this.onerror=null; this.src='https://placehold.co/16x16/F0F0F0/333333?text=UE';" class="meta-icon mr-1 w-3.5 h-3.5" alt="Unreal Engine Logo">
+                                                UE 4.27 (C++ & Blueprint)
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Text Content Area: Padding reduced from p-6 to py-4 px-6 -->
+                        <div class="py-4 px-6">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h3 class="text-xl font-heading font-bold text-text-default group-hover:text-charcoal-accent transition duration-300">
+                                        Bouncy Pixel (2024)
+                                    </h3>
+                                    
+                                </div>
+                                <!-- Arrow Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-charcoal-accent flex-shrink-0 ml-4 group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </div>
+                            <p class="text-sm text-project-meta project-short-desc">
+                                I created Bouncy Pixel for Harvard's CS50 final project using Unreal Engine 4.27 with C++ and Blueprint. It's a Pong game supporting single-player and local two-player on one keyboard. The ball accelerates and leaves trails as your score increases, with dust particle effects on wall impacts for extra visual polish.
+                            </p>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Skills & Tools Section -->
+            <section id="skills" class="mb-20 main-content-section">
+                <h2 class="text-3xl font-heading font-bold text-text-default mb-8 border-b border-dark-border pb-1 inline-block">
+                    <span class="text-charcoal-accent">//</span> Skills & Tools
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10 text-text-default">
+
+                    <!-- Core Languages -->
+                    <div class="glass-card bg-card-bg p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-heading font-bold text-charcoal-accent mb-4 border-b border-dark-border pb-2">Core Languages</h3>
+                        <ul class="space-y-2 list-disc list-inside text-project-meta">
+                            <li><strong class="text-text-default">C++</strong></li>
+                            <li><strong class="text-text-default">C</strong></li>
+                            <li><strong class="text-text-default">Scratch</strong></li>
+                            <li><strong class="text-text-default">Python</strong></li>
+                        </ul>
+                    </div>
+
+                    <!-- Maths & Physics -->
+                    <div class="glass-card bg-card-bg p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-heading font-bold text-charcoal-accent mb-4 border-b border-dark-border pb-2">Maths & Physics</h3>
+                        <ul class="space-y-2 list-disc list-inside text-project-meta">
+                            <li><strong class="text-text-default">3D Maths</strong></li>
+                            <li><strong class="text-text-default">Linear Algebra</strong></li>
+                            <li><strong class="text-text-default">Game Physics & Dynamics</strong></li>
+                            <li><strong class="text-text-default">Movements & Kinematics</strong></li>
+                        </ul>
+                    </div>
+
+                    <!-- Development Tools -->
+                    <div class="glass-card bg-card-bg p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-heading font-bold text-charcoal-accent mb-4 border-b border-dark-border pb-2">Development Tools</h3>
+                        <ul class="space-y-2 list-disc list-inside text-project-meta">
+                            <li><strong class="text-text-default">Unreal Engine</strong></li>
+                            <li><strong class="text-text-default">Visual Studio</strong></li>
+                            <li><strong class="text-text-default">GitHub</strong></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Background Section (Education) -->
+            <section id="background" class="mb-20 main-content-section">
+                <h2 class="text-3xl font-heading font-bold text-text-default mb-8 border-b border-dark-border pb-1 inline-block">
+                    <span class="text-charcoal-accent">//</span> Education & Background
+                </h2>
+
+                <p class="text-md leading-relaxed text-project-meta max-w-4xl mb-10">
+                    My commitment to becoming a Gameplay Programmer is founded on a focused, intensive, and self-directed curriculum. My learning is directly validated by the successful implementation of core mechanics across my portfolio projects.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10 text-text-default">
+
+                    <!-- Core Technical Coursework -->
+                    <div class="glass-card bg-card-bg p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-heading font-bold text-charcoal-accent mb-4 border-b border-dark-border pb-2">Core Technical Coursework</h3>
+                        <ul class="space-y-4 list-none text-project-meta">
+                            <li>
+                                <strong class="text-text-default block">Unreal Engine C++: Game Developer Specialization</strong> (Udemy, 2024)
+                                <span class="block text-sm">Focus: Applied C++ development for game mechanics, custom components, and mastering core engine architecture. (Principles learned are directly transferable to Unreal Engine 5.)</span>
+                            </li>
+                            <li>
+                                <strong class="text-text-default block">CS50x: Introduction to Computer Science</strong> (Harvard University via edX, 2024)
+                                <span class="block text-sm">Focus: Foundational computer science concepts, data structures, and algorithms, providing a solid base for performant and scalable code.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Self-Directed Technical Mastery -->
+                    <div class="glass-card bg-card-bg p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-heading font-bold text-charcoal-accent mb-4 border-b border-dark-border pb-2">Self-Directed Technical Mastery</h3>
+                        <p class="text-sm mb-4">Demonstrated mastery of complex systems through practical application, including:</p>
+                        <ul class="space-y-2 list-disc list-inside text-project-meta">
+                            <li><strong class="text-text-default">3D Math & Linear Algebra:</strong> Applied in custom camera controls, object transformations, and projectile motion systems.</li>
+                            <li><strong class="text-text-default">Game Physics & Dynamics:</strong> Expertise in Rigid Body Dynamics, Collision Detection, and advanced Line Tracing techniques.</li>
+                            <li><strong class="text-text-default">Modern C++ and Performance:</strong> Focused on writing clean, optimized C++ code for game logic and system efficiency.</li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <!-- Practical Experience & Achievements (Full Width below the grid) -->
+                <div class="mt-10 glass-card bg-card-bg p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-heading font-bold text-charcoal-accent mb-4 border-b border-dark-border pb-2">Practical Experience & Achievements</h3>
+                    <ul class="space-y-2 list-disc list-inside text-project-meta">
+                        <li><strong class="text-text-default">Game Jam Completion (2025):</strong> Successfully executed, developed, and shipped a complete game project under strict time constraints, demonstrating the ability to scope and deliver working features.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- NEW ABOUT ME SECTION (Moved from Hero) -->
+            <section id="about-me" class="mb-20 bg-text-default/5 p-8 rounded-xl main-content-section">
+                <div class="text-center">
+                    <!-- New wrapper for centering -->
+                    <h2 class="text-3xl font-heading font-bold text-text-default mb-8 border-b border-dark-border pb-1 inline-block">
+                        <span class="text-charcoal-accent">//</span> About Me
+                    </h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+
+                    <!-- Left Column (Profile Image) -->
+                    <div class="col-span-1 flex justify-center items-center">
+                        <!-- Profile Image (Circular Shape) -->
+                        <div class="w-48 h-48 rounded-full overflow-hidden profile-border transform hover:scale-105 transition-transform duration-300 flex-shrink-0">
+                            <img src="./profile.jpeg" onerror="this.onerror=null; this.src='https://placehold.co/224x224/F0F0F0/333333?text=PROFILE+ERROR';" alt="Profile Photo" class="w-full h-full object-cover profile-image-effect">
+                        </div>
+                    </div>
+
+                    <!-- Right Column (Bio Text and Quick Facts) -->
+                    <div class="col-span-1 md:col-span-2 text-center md:text-left">
+                        <p class="text-md leading-relaxed text-project-meta mb-4">
+                            I am a passionate and highly motivated Gameplay Programmer dedicated to the engineering of robust and engaging game mechanics. My journey into game development is defined by intense, self-directed learning and a commitment to mastering the most technically demanding aspects of the craft.
+                        </p>
+                        <p class="text-md leading-relaxed text-project-meta mb-4">
+                            My focus is on C++ systems and solving the complex mathematical and physics challenges that drive realistic player experience—from character kinematics and collision resolution to custom AI state management.
+                        </p>
+                        <p class="text-md leading-relaxed text-project-meta mb-4">
+                            I believe the core of great gameplay lies in clean, efficient code. I thrive on translating theoretical concepts (like Linear Algebra and Rigid Body Dynamics) into high-performance, polished interactions.
+                        </p>
+                        <p class="text-md leading-relaxed text-project-meta mb-6">
+                            I am currently seeking a role where I can contribute a strong C++ foundation and an unyielding drive for technical problem-solving to a collaborative team environment.
+                        </p>
+
+                        
+                    </div>
+
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer Placeholder (Simple, minimal) -->
+    <footer class="container mx-auto px-6 lg:px-24 py-8 text-center text-sm text-project-meta border-t border-dark-border main-content-section">
+        <p>&copy; <span id="current-year"></span> Ankit Dabas. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Removed the complex routing logic as Project 1 now links to a separate HTML file.
+        // The rest of the projects link to '#' placeholders.
+    </script>
+</body>
+</html>
