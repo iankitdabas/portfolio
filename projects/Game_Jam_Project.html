@@ -1,0 +1,519 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CHANGED: Title -->
+    <title>Brackeys Game Jam Project | Project Details</title>
+    <!-- Load Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Configure Tailwind for custom colors and font (Matches Main Site) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // GLASSMORHISM LIGHT COLORS
+                        'bg-primary': '#F0F0F0', // Slightly darker background
+                        'text-default': '#2A2A2A', // Dark Gray Text
+                        'charcoal-accent': '#333333', // Dark Charcoal Accent Color
+                        'card-bg': 'rgba(255, 255, 255, 0.5)', // Transparent White for Glass
+                        'dark-border': '#E0E0E0', // Light Gray Border
+                        'project-meta': '#555555', // Mid Gray for metadata
+                        'light-charcoal-bg': '#D3D3D3', // HEX code for light sections
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        heading: ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+        .glass-card {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.25);
+        }
+
+        /* Custom progress bar styling for seek functionality */
+        .custom-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--tw-colors-charcoal-accent);
+            cursor: pointer;
+            margin-top: -5px;
+            box-shadow: 0 0 5px rgba(51, 51, 51, 0.5);
+        }
+
+        .custom-range::-moz-range-thumb {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--tw-colors-dark-border);
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(51, 51, 51, 0.5);
+        }
+
+        .custom-range {
+            height: 5px;
+            background: var(--tw-colors-dark-border);
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        /* Styling for the playback time fill */
+        #progress-bar {
+            background: linear-gradient(to right, var(--tw-colors-charcoal-accent) var(--value), var(--tw-colors-dark-border) var(--value));
+        }
+
+        /* Video needs to be styled for custom controls */
+        #project-video {
+            -webkit-appearance: none;
+            appearance: none;
+            display: block;
+            cursor: default; /* Changed cursor to default as video is no longer clickable */
+        }
+
+            /* Hide the poster image completely on load to prevent flash */
+            #project-video:not([poster]) {
+                background-image: none;
+            }
+
+        /* Controls should not interfere with video clicks */
+        #video-controls {
+            pointer-events: none; /* Make the container non-interactive */
+        }
+
+            #video-controls > * {
+                pointer-events: auto; /* Re-enable interaction for children (seek bar and button) */
+            }
+
+        /* Explicit Manual Size Control for Video Player */
+        .project-video-size {
+            /* Saved Manual Size Control */
+            width: 1200px;
+            height: 580px;
+        }
+
+
+        /* NEW: Half-Light Background Gradient - Now uses #D3D3D3 for the darker end */
+        .body-gradient {
+            background: linear-gradient(to bottom, #F0F0F0 0%, /* Light gray top */
+            #F5F5F5 50vh, /* Mid-point */
+            #D3D3D3 100% /* CHANGED: Medium gray bottom */
+            );
+            background-attachment: fixed; /* Keep the gradient fixed while scrolling */
+        }
+
+        /* --- NEW ASPECT RATIO FOR COMBAT VIDEO (4:5) --- */
+        .aspect-ratio-box {
+            position: relative;
+            height: 0;
+        }
+
+        .aspect-w-4 {
+            --tw-aspect-w: 4;
+            --tw-aspect-h: 5;
+            padding-bottom: calc(var(--tw-aspect-h) / var(--tw-aspect-w) * 100%);
+        }
+
+        .aspect-h-5 {
+            --tw-aspect-h: 5;
+        }
+        /* --- NEW ASPECT RATIO FOR HUD (16:9) --- */
+        .aspect-w-16 {
+            --tw-aspect-w: 16;
+            --tw-aspect-h: 9;
+            padding-bottom: calc(var(--tw-aspect-h) / var(--tw-aspect-w) * 100%);
+        }
+
+        .aspect-h-9 {
+            --tw-aspect-h: 9;
+        }
+
+        /* --- NEW ASPECT RATIO FOR 4:3 --- */
+        .aspect-w-4-new {
+            --tw-aspect-w: 4;
+            --tw-aspect-h: 3;
+            padding-bottom: calc(var(--tw-aspect-h) / var(--tw-aspect-w) * 100%);
+        }
+
+        .aspect-h-3-new {
+            --tw-aspect-h: 3;
+        }
+    </style>
+</head>
+<body class="text-text-default font-sans antialiased body-gradient">
+
+    <!-- Fixed Navigation Header --><header class="fixed top-0 left-0 right-0 bg-bg-primary z-50 shadow-md">
+        <div class="container mx-auto px-6 lg:px-24 py-4 flex justify-between items-center">
+            <a href="../index.html" class="text-xl font-heading font-bold text-charcoal-accent">Ankit Dabas</a>
+            <a href="../index.html#projects" class="sm:text-sm text-charcoal-accent font-semibold hover:underline">← Back to Portfolio</a>
+        </div>
+    </header>
+
+    <!-- Main Project Detail Content - Adjusted top padding for fixed header --><div class="container mx-auto px-6 lg:px-24 py-12 pt-32">
+
+        <!-- === NEW STRUCTURE: Full Width Video, Details Stacked Below === -->
+        <!-- 1. Video Player (Explicit Pixel Size, and Centered) -->
+        <div class="w-full h-full flex justify-center mb-8">
+            <!-- ADDED: project-video-size class for explicit size control -->
+            <div class="project-video-size">
+                <div class="relative w-full h-full">
+
+                    <!-- Video Element - CHANGED: Paths for Game Jam -->
+                    <video id="project-video"
+                           muted playsinline
+                           poster="../projects/Video/Brackeys Project/Brackeys_GameJam_Project.mp4"
+                           class="w-full h-full object-cover shadow-2xl"
+                           preload="metadata"
+                           controls="false"
+                           playsinline>
+                        <source src="../projects/Video/Brackeys Project/Brackeys_GameJam_Project.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+
+                    <!-- Control Bar (Seek Bar and Time Display ONLY) --><div id="video-controls" class="absolute inset-x-0 bottom-0 mx-auto w-full p-1">
+
+                        <!-- Seek Bar --><input type="range" id="progress-bar" value="0" min="0" max="100" step="0.1"
+                                                class="w-full custom-range transition-colors duration-100 mb-1">
+
+                        <!-- Control Row (Time Display ONLY) --><div class="flex items-center justify-end text-xs font-semibold text-bg-primary" style="text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);">
+
+                            <!-- Current Time / Duration --><div class="flex space-x-1">
+                                <span id="current-time">0:00</span>
+                                <span>/</span>
+                                <span id="video-duration">0:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Project Title & Position (Now below video) -->
+        <div class="mb-12 border-b border-dark-border pb-4">
+            <!-- CHANGED: Title and Subtitle -->
+            <h1 class="text-4xl font-heading font-bold text-text-default mb-1 text-center">Brackeys Game Jam Project (2025)</h1>
+            <p class="text-xl text-project-meta text-center">Gameplay Programmer | 6 Months</p>
+        </div>
+
+
+        <!-- === NEW: About and Project Info Sections (Fixed Width, Aligned Grid) === -->
+        <!-- Main Container for the 2-Column Grid (About + Project Info) -->
+        <div class="w-[80%] mx-auto mb-12">
+            <div class="grid grid-cols-2 gap-8">
+
+                <!-- Column 1: About This Project -->
+                <div class="bg-light-charcoal-bg p-10 rounded-xl shadow-md">
+                    <h3 class="text-2xl font-heading font-bold text-charcoal-accent mb-4 border-b border-dark-border/50 pb-2">About This Project</h3>
+                    <!-- CHANGED: Updated About text -->
+                    <div class="text-md leading-relaxed text-text-default space-y-3">
+                        <p>
+                            This 2D Puzzle Platformer was my entry for the Brackeys Game Jam, built in just one week using Unreal Engine 5 with C++ and Blueprints.
+                        </p>
+                        <p>
+                            The theme was "Risk it for the biscuit," which I implemented as the game's core mechanic. At the start, the player is offered a choice: "Jump if you are ready to risk it, or just keep going."
+                        </p>
+                        <!-- FIXED: Changed list-none to list-disc and adjusted padding -->
+                        <ul class="list-disc space-y-2 pl-8">
+                            <li><strong class="font-bold text-project-meta">No-Risk Path:</strong> The player can ignore the prompt, walk right, and reach the win flag without facing any obstacles.</li>
+                            <li><strong class="font-bold text-project-meta">Risk Path:</strong> If the player jumps, they drop into a challenging gauntlet. They must overcome a series of traps and puzzles to reach the same goal, truly "risking it" for the adventure.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Column 2: Project Info -->
+                <div class="bg-light-charcoal-bg p-10 rounded-xl shadow-md">
+                    <h3 class="text-2xl font-heading font-bold text-charcoal-accent mb-4 border-b border-dark-border/50 pb-2">Project Info</h3>
+                    <!-- CHANGED: Updated Project Info list -->
+                    <ul class="text-md leading-relaxed text-text-default space-y-3">
+                        <li class="font-semibold">Event: <span class="text-project-meta font-normal opacity-100">Brackeys Game Jam</span></li>
+                        <li class="font-semibold">Theme: <span class="text-project-meta font-normal opacity-100">"Risk it for the biscuit"</span></li>
+                        <li class="font-semibold">Genre: <span class="text-project-meta font-normal opacity-100">2D Puzzle Platformer</span></li>
+                        <li class="font-semibold">Duration: <span class="text-project-meta font-normal opacity-100">1 Week</span></li>
+                        <li class="font-semibold">Engine: <span class="text-project-meta font-normal opacity-100">Unreal Engine 5</span></li>
+                        <li class="font-semibold">Tools: <span class="text-project-meta font-normal opacity-100">C++ & Blueprints</span></li>
+                        <li class="font-semibold">Roles: <span class="text-project-meta font-normal opacity-100">Solo Developer (Gameplay Programmer & Level Designer)</span></li>
+                        <li class="font-semibold">Status: <span class="text-project-meta font-normal opacity-100">Completed Prototype</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- === END NEW SECTIONS === -->
+        <!-- === PENDULUM TRAP SECTION (WIDTH CHANGED) === -->
+        <div class="w-[90%] mx-auto mb-12">
+            <div class="bg-light-charcoal-bg p-10 rounded-xl shadow-md">
+                <h3 class="text-2xl font-heading font-bold text-charcoal-accent mb-4 border-b border-dark-border/50 pb-2">Pendulum Trap</h3>
+                <div class="text-md leading-relaxed text-text-default space-y-3">
+                    <p>
+                        The Pendulum Trap is a 2D, multi-segment swinging hazard built with <strong class="font-bold text-[#555555]">PaperFlipbookComponents</strong> and a <strong class="font-bold text-[#555555]"> USphereComponent </strong> collider. The trap chains (three segments + ball) are attached as a hierarchy so the <strong class="font-bold text-[#555555]"> pivot rotation </strong> applied to the actor causes a natural chained swing.
+                    </p>
+
+                    <!-- NEW: Image/Video Grid (4:3 Ratio) -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 my-6">
+                        <!-- Left: Image -->
+                        <div>
+                            <!--
+                                Manual Sizing Tip:
+                                To set a manual size (e.g., 600x450), remove the classes 'aspect-ratio-box', 'aspect-w-4-new', 'aspect-h-3-new'
+                                and add fixed w/h classes like 'w-[600px] h-[450px]'.
+                            -->
+                            <div class="aspect-ratio-box aspect-w-4-new aspect-h-3-new rounded-lg shadow-lg overflow-hidden">
+                                <img src="https://placehold.co/800x600/555555/E0E0E0?text=Pendulum+Setup"
+                                     alt="Pendulum trap setup in editor"
+                                     class="absolute top-0 left-0 w-full h-full object-cover">
+                            </div>
+                            <p class="text-center text-sm text-project-meta mt-2">Pendulum component hierarchy in Unreal Engine.</p>
+                        </div>
+                        <!-- Right: Video -->
+                        <div>
+                            <div class="aspect-ratio-box aspect-w-4-new aspect-h-3-new rounded-lg shadow-lg overflow-hidden">
+                                <video muted loop autoplay playsinline
+                                       poster="https://placehold.co/800x600/2A2A2A/E0E0E0?text=Gameplay+Video"
+                                       class="absolute top-0 left-0 w-full h-full object-cover">
+                                    <!-- Use a real video path when ready -->
+                                    <source src="../projects/Video/Brackeys Project/PendulumTrap.mp4" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                            <p class="text-center text-sm text-project-meta mt-2">Live gameplay of the Pendulum Trap in action.</p>
+                        </div>
+                    </div>
+                    <!-- END: Image/Video Grid -->
+
+                    <p>
+                        <strong class="font-bold text-charcoal-accent">Hierarchical Component Setup:-</strong>The trap uses Unreal's component attachment system where I created four chain segments using Paper2D flipbooks, then attached each one to the previous segment, ending with the ball and a sphere collider. Because of how parent-child relationships work in Unreal, when I rotate the base of the chain, all the segments naturally follow along, which gives it that realistic chain swinging effect without extra work.
+                    </p>
+
+                    <p>
+                        <strong class="font-bold text-charcoal-accent">Trigonometric Oscillation:-</strong>Instead of animating the swing manually, I used a <strong class="font-bold text-[#555555]"> sine wave function </strong> to calculate the rotation <strong class="font-bold text-[#555555]"> angle </strong> every frame <strong class="font-bold text-[#555555]"> (Angle = sin(TimeCounter * SwingAmplitude) </strong>. This gives a really smooth, natural pendulum motion because <strong class="font-bold text-[#555555]"> sine waves </strong> naturally <strong class="font-bold text-[#555555]"> accelerate and decelerate </strong> at the right points. I can tweak the swing range (set to ±45 degrees) and speed (2 full swings per second) super easily, which was helpful during the jam when testing different difficulty levels.
+                        </D>
+
+                    <p>
+                        <strong class="font-bold text-charcoal-accent">Collision Detection:-</strong>I attached a sphere collider to the ball and hooked up <strong class="font-bold text-[#555555]"> Unreal's overlap events' </strong> to detect when the player hits it. The collision handler triggers the respawn logic, which was straightforward to implement using dynamic delegate binding in the BeginPlay function.
+
+                    </p>
+                    <!-- END NEW SUBSECTION -->
+
+                </div>
+            </div>
+        </div>
+        <!-- === END NEW SECTION === -->
+        <!-- === ROCK FALL SECTION === -->
+        <div class="w-[90%] mx-auto mb-12">
+            <div class="bg-light-charcoal-bg p-10 rounded-xl shadow-md">
+                <h3 class="text-2xl font-heading font-bold text-charcoal-accent mb-4 border-b border-dark-border/50 pb-2">Rock Fall</h3>
+                <div class="text-md leading-relaxed text-text-default space-y-3">
+                    <p>
+                        I created this vertical moving rock trap for the game jam that drops down and rises back up in a loop. The rock <strong class="font-bold text-[#555555]"> accelerates </strong> as it falls (like real <strong class="font-bold text-[#555555]"> gravity </strong>) and moves at a constant speed when returning to the top. When players get hit by the falling rock, they <strong class="font-bold text-[#555555]"> respawn </strong> at their starting position and hear a hit sound effect.
+                    </p>
+
+                    <!-- NEW: Rock Fall Video (16:9) -->
+                    <!-- CHANGED: Added 'w-3/4 mx-auto' to decrease size and center the video player -->
+                    <div class="my-6 w-3/5 mx-auto">
+                        <div class="aspect-ratio-box aspect-w-16 aspect-h-9 rounded-lg shadow-lg overflow-hidden">
+                            <video muted loop autoplay playsinline
+                                   class="absolute top-0 left-0 w-full h-full object-cover">
+                                <!-- FIXED: Updated Path with relative notation and URL encoding for space -->
+                                <source src="../projects/Video/Brackeys%20Project/RockFall.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        <p class="text-center text-sm text-project-meta mt-2">Demonstration of the accelerated rock fall mechanic.</p>
+                    </div>
+                    <!-- END: Rock Fall Video -->
+
+                    <p>
+                        <strong class="font-bold text-charcoal-accent">State-Based Movement System:</strong> The rock uses a simple state machine with two states—moving down and moving up. I track the current position against the <strong class="font-bold text-[#555555]"> starting location </strong> and <strong class="font-bold text-[#555555]"> target location </strong> to switch between states. When the rock reaches the bottom, it flips to "move up" mode, and when it reaches the top, it switches back to "move down." This creates a continuous loop without needing timers or complex logic.
+                    </p>
+                    <p>
+                        <strong class="font-bold text-charcoal-accent">Accelerated Falling Behavior:</strong> To make the falling motion feel more realistic, I implemented acceleration on the downward movement. The rock starts at a base speed and gradually increases (<strong class="font-bold text-[#555555]"> CurrentMoveDownSpeed += Acceleration * DeltaTime </strong>) as it falls, mimicking gravity. When it moves back up, the speed resets to a constant value, which gives it that mechanical "<strong class="font-bold text-[#555555]"> trap resetting </strong>" feel. I used <strong class="font-bold text-[#555555]"> Unreal's FMath::VInterpConstantTo' </strong> for smooth <strong class="font-bold text-[#555555]"> Linear Interpolation </strong> between positions.
+                    </p>
+                    <p>
+                        <strong class="font-bold text-charcoal-accent">Collision and Audio Feedback:</strong> The trap uses a box collider to detect player hits. When <strong class="font-bold text-[#555555]"> collision </strong> happens, I cast to the player character class to verify it's actually the player, then relocate them to their spawn point and trigger a 2D sound effect. This gives immediate feedback that the trap connected, which was important for player clarity during the fast-paced jam gameplay.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- === END NEW SECTION === -->
+        <!-- === ADDITIONAL GAMEPLAY MECHANICS SECTION === -->
+        <div class="w-[90%] mx-auto mb-12">
+            <div class="bg-light-charcoal-bg p-10 rounded-xl shadow-md">
+                <h3 class="text-2xl font-heading font-bold text-charcoal-accent mb-4 border-b border-dark-border/50 pb-2">Additional Gameplay Mechanics</h3>
+                <div class="text-md leading-relaxed text-text-default space-y-4">
+
+                    <p>
+                        <strong class="font-bold text-charcoal-accent">Saw Blade Trap:</strong> The saw blade starts inactive and triggers when the player gets within 140 units, then aggressively chases them down. I implemented this using distance checking between the player and saw blade each frame—once that threshold is hit, the blade activates and moves toward the player using a simple <strong class="font-bold text-[#555555]"> Velocity Equation </strong> (Location + Speed * DeltaTime * Direction). If it hits the player, they <strong class="font-bold text-[#555555]"> respawn </strong> at the start. I also added a fun interaction where if two saw blades <strong class="font-bold text-[#555555]"> Collide </strong> with each other, they both get <strong class="font-bold text-[#555555]"> Destroyed </strong>, which created some emergent gameplay moments during testing.
+                    </p>
+
+                    <p>
+                        <strong class="font-bold text-charcoal-accent">Slidable Box Puzzle:</strong> This was designed to solve vertical traversal puzzles where players can't jump high enough on their own. Players can push the box by colliding with it, and I apply a <strong class="font-bold text-[#555555]"> Constant Force </strong> (Location + PushSpeed * DeltaTime * Direction) to slide it across the ground. The tricky part was making it feel right—I used <strong class="font-bold text-[#555555]"> Multi Line Trace By Channel </strong> to detect if the box is grounded or airborne. When it's on the ground, I enable physics simulation so it slides smoothly, but when it reaches a ledge or corner, physics disables and it becomes a solid platform the player can stand on. This prevents the box from falling off edges and gives players a stable jumping platform.
+                    </p>
+
+                    <p>
+                        <strong class="font-bold text-charcoal-accent">Jump Pad:</strong> Pretty straightforward boost pad that launches players upward. I used Unreal's built-in <strong class="font-bold text-[#555555]"> LaunchCharacter() </strong> function when the player overlaps the pad, sending them 500 units up in the air. It's a simple mechanic but really helpful for maintaining level flow and giving players those satisfying momentum moments.
+                    </p>
+
+                    <p>
+                        <strong class="font-bold text-charcoal-accent">Spike Trap:</strong> Basic instant-death hazard. When the player overlaps with the spikes, they immediately respawn at their starting location. Simple <strong class="font-bold text-[#555555]"> Collision Detection </strong>  using overlap events—no fancy logic needed, just effective punishment for careless movement.
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+
+                        <!-- Video 1 -->
+                        <div class="relative rounded-lg shadow-lg overflow-hidden h-48 bg-black group">
+                            <video muted loop autoplay playsinline
+                                   class="absolute top-0 left-0 w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity">
+                                <!-- Replace with your actual video path -->
+                                <source src="../projects/Video/Brackeys%20Project/SawBlade.mp4" type="video/mp4">
+                            </video>
+                            <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-3">
+                                <span class="text-xs font-bold text-white uppercase tracking-wider">Saw Blade</span>
+                            </div>
+                        </div>
+
+                        <!-- Video 2 -->
+                        <div class="relative rounded-lg shadow-lg overflow-hidden h-48 bg-black group">
+                            <video muted loop autoplay playsinline
+                                   class="absolute top-0 left-0 w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity">
+                                <!-- Replace with your actual video path -->
+                                <source src="../projects/Video/Brackeys Project/SlidingBox.mp4" type="video/mp4">
+                            </video>
+                            <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-3">
+                                <span class="text-xs font-bold text-white uppercase tracking-wider">Box Puzzle</span>
+                            </div>
+                        </div>
+
+                        <!-- Video 3 -->
+                        <div class="relative rounded-lg shadow-lg overflow-hidden h-48 bg-black group">
+                            <video muted loop autoplay playsinline
+                                   class="absolute top-0 left-0 w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity">
+                                <!-- Replace with your actual video path -->
+                                <source src="../projects/Video/Brackeys%20Project/Jump_SpikeTrap.mp4" type="video/mp4">
+                            </video>
+                            <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-3">
+                                <span class="text-xs font-bold text-white uppercase tracking-wider">Jump Pad</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- === END NEW SECTION === -->
+    
+        <div class="w-[90%] mx-auto mb-12">
+            <div class="bg-light-charcoal-bg p-10 rounded-xl shadow-md">
+                <h3 class="text-2xl font-heading font-bold text-charcoal-accent mb-4 border-b border-dark-border/50 pb-2">What I Learned!</h3>
+                <div class="text-md leading-relaxed text-text-default space-y-4">
+                    <p>
+                        This was my second game jam, and honestly, my first attempt didn't go great. During the GMTK Game Jam, I got stuck overthinking the theme—spending way too much time brainstorming ideas and obsessing over how perfectly they fit the "Loop" concept. By the time I committed to something and started building, I'd already burned through most of the deadline. I didn't finish on time, which was pretty demotivating.
+                    </p>
+                    <p>
+                        That failure taught me an important lesson: don't let analysis paralysis kill your momentum. When I saw the Brackeys Game Jam announcement (their second one that year), I approached it completely differently. Instead of overthinking the theme, I picked a simple, achievable concept and immediately started building. That mindset shift—from "perfect idea" to "executable scope"—made all the difference.
+                    </p>
+                    <p>
+                        On top of that, this was my first time working on a 2D game, which added another layer of challenge. I'd only done 3D projects before, so everything from level design and floor collision to working with Paper2D flipbook components was new territory. I spent time learning these concepts right before and during the jam, then applied them under the one-week deadline. It was intense, but figuring out 2D-specific workflows while also managing game jam time pressure really pushed my problem-solving skills and taught me how to learn fast when it counts.
+                    </p>
+                </div>
+            </div>
+        </div>   
+
+    </div>
+
+    <!-- Footer Placeholder (Simple, minimal) --><footer class="container mx-auto px-6 lg:px-24 py-8 text-center text-sm text-project-meta border-t border-dark-border">
+        <p>&copy; <span id="current-year"></span> Ankit Dabas. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // --- Custom Video Player Logic (Main Video) ---
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = Math.floor(seconds % 60);
+            const formattedSeconds = remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds;
+            return `${minutes}:${formattedSeconds}`;
+        }
+
+        function updateProgressBar(video, progressBar, currentTimeSpan, durationSpan) {
+            if (!video || !progressBar || !currentTimeSpan || !durationSpan) return;
+            const percentage = (video.currentTime / video.duration) * 100;
+            progressBar.style.setProperty('--value', percentage + '%');
+            progressBar.value = percentage;
+            currentTimeSpan.textContent = formatTime(video.currentTime);
+            if (durationSpan && !isNaN(video.duration)) {
+                durationSpan.textContent = formatTime(video.duration);
+            }
+        }
+
+        function initVideoPlayer() {
+            const video = document.getElementById('project-video');
+            const progressBar = document.getElementById('progress-bar');
+            const currentTimeSpan = document.getElementById('current-time');
+            const durationSpan = document.getElementById('video-duration');
+
+            if (!video) return; // Guard clause for main video player
+
+            video.addEventListener('ended', () => {
+                video.pause();
+                video.currentTime = 0; // Reset to start
+            });
+
+            video.addEventListener('loadedmetadata', () => {
+                if (durationSpan) durationSpan.textContent = formatTime(video.duration);
+            });
+
+            if (video.readyState >= 2) {
+                if (durationSpan) durationSpan.textContent = formatTime(video.duration);
+            }
+
+            video.addEventListener('timeupdate', () => {
+                updateProgressBar(video, progressBar, currentTimeSpan, durationSpan);
+            });
+
+            if (progressBar) {
+                progressBar.addEventListener('input', () => {
+                    if (!isNaN(video.duration)) {
+                        const newTime = (progressBar.value / 100) * video.duration;
+                        video.currentTime = newTime;
+                        updateProgressBar(video, progressBar, currentTimeSpan, durationSpan);
+                    } else {
+                        console.error("Video duration not loaded, cannot seek.");
+                    }
+                });
+            }
+
+            video.muted = true;
+            if (video.readyState >= 3) {
+                video.play();
+            } else {
+                video.addEventListener('canplay', () => {
+                    video.play();
+                }, { once: true });
+            }
+
+            if (progressBar) progressBar.style.setProperty('--value', '0%');
+        }
+
+        // All other player init functions removed as they don't exist on this page.
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initVideoPlayer();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,339 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Combat | Project Details</title>
+    <!-- Load Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Configure Tailwind for custom colors and font (Matches Main Site) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // GLASSMORHISM LIGHT COLORS
+                        'bg-primary': '#F0F0F0', // Slightly darker background
+                        'text-default': '#2A2A2A', // Dark Gray Text
+                        'charcoal-accent': '#333333', // Dark Charcoal Accent Color
+                        'card-bg': 'rgba(255, 255, 255, 0.5)', // Transparent White for Glass
+                        'dark-border': '#E0E0E0', // Light Gray Border
+                        'project-meta': '#555555', // Mid Gray for metadata
+                        'light-charcoal-bg': '#D3D3D3', // HEX code for light sections
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        heading: ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+        .glass-card {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.25);
+        }
+
+        /* Custom progress bar styling for seek functionality */
+        .custom-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--tw-colors-charcoal-accent);
+            cursor: pointer;
+            margin-top: -5px;
+            box-shadow: 0 0 5px rgba(51, 51, 51, 0.5);
+        }
+
+        .custom-range::-moz-range-thumb {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--tw-colors-dark-border);
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(51, 51, 51, 0.5);
+        }
+
+        .custom-range {
+            height: 5px;
+            background: var(--tw-colors-dark-border);
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        /* Styling for the playback time fill */
+        #progress-bar {
+            background: linear-gradient(to right, var(--tw-colors-charcoal-accent) var(--value), var(--tw-colors-dark-border) var(--value));
+        }
+
+        /* Video needs to be styled for custom controls */
+        #project-video {
+            -webkit-appearance: none;
+            appearance: none;
+            display: block;
+            cursor: default; /* Changed cursor to default as video is no longer clickable */
+        }
+
+            /* Hide the poster image completely on load to prevent flash */
+            #project-video:not([poster]) {
+                background-image: none;
+            }
+
+        /* Controls should not interfere with video clicks */
+        #video-controls {
+            pointer-events: none; /* Make the container non-interactive */
+        }
+
+            #video-controls > * {
+                pointer-events: auto; /* Re-enable interaction for children (seek bar and button) */
+            }
+
+        /* Explicit Manual Size Control for Video Player */
+        /* CHANGED: Updated dimensions to 4:3 Aspect Ratio (800x600) */
+        .project-video-size {
+            /* Saved Manual Size Control */
+            width: 800px;
+            height: 600px;
+        }
+
+
+        /* NEW: Half-Light Background Gradient - Now uses #D3D3D3 for the darker end */
+        .body-gradient {
+            background: linear-gradient(to bottom, #F0F0F0 0%, /* Light gray top */
+            #F5F5F5 50vh, /* Mid-point */
+            #D3D3D3 100% /* CHANGED: Medium gray bottom */
+            );
+            background-attachment: fixed; /* Keep the gradient fixed while scrolling */
+        }
+
+        /* Aspect Ratio Utilities */
+        .aspect-ratio-box {
+            position: relative;
+            height: 0;
+        }
+
+        .aspect-w-16 {
+            --tw-aspect-w: 16;
+            --tw-aspect-h: 9;
+            padding-bottom: calc(var(--tw-aspect-h) / var(--tw-aspect-w) * 100%);
+        }
+
+        .aspect-h-9 {
+            --tw-aspect-h: 9;
+        }
+    </style>
+</head>
+<body class="text-text-default font-sans antialiased body-gradient">
+
+    <!-- Fixed Navigation Header -->
+    <header class="fixed top-0 left-0 right-0 bg-bg-primary z-50 shadow-md">
+        <div class="container mx-auto px-6 lg:px-24 py-4 flex justify-between items-center">
+            <a href="../index.html" class="text-xl font-heading font-bold text-charcoal-accent">Ankit Dabas</a>
+            <a href="../index.html#projects" class="sm:text-sm text-charcoal-accent font-semibold hover:underline">← Back to Portfolio</a>
+        </div>
+    </header>
+
+    <!-- Main Project Detail Content -->
+    <div class="container mx-auto px-6 lg:px-24 py-12 pt-32">
+
+        <!-- 1. Video Player (Explicit Pixel Size, and Centered) -->
+        <div class="w-full h-full flex justify-center mb-8">
+            <div class="project-video-size">
+                <div class="relative w-full h-full">
+
+                    <!-- Video Element (Placeholder Path) -->
+                    <!-- CHANGED: Updated poster to match 4:3 ratio and source path -->
+                    <video id="project-video"
+                           muted playsinline
+                           poster="https://placehold.co/800x600/2A2A2A/E0E0E0?text=Cosmic+Combat+Gameplay"
+                           class="w-full h-full object-cover shadow-2xl"
+                           preload="metadata"
+                           controls="false"
+                           playsinline>
+                        <!-- CHANGED: Corrected path with ../ prefix -->
+                        <source src="../projects/Video/CosmicCombat/CosmicCombat_gameplay.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+
+                    <!-- Control Bar -->
+                    <div id="video-controls" class="absolute inset-x-0 bottom-0 mx-auto w-full p-1">
+                        <!-- Seek Bar -->
+                        <input type="range" id="progress-bar" value="0" min="0" max="100" step="0.1"
+                               class="w-full custom-range transition-colors duration-100 mb-1">
+                        <!-- Time Display -->
+                        <div class="flex items-center justify-end text-xs font-semibold text-bg-primary" style="text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);">
+                            <div class="flex space-x-1">
+                                <span id="current-time">0:00</span>
+                                <span>/</span>
+                                <span id="video-duration">0:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Project Title & Position -->
+        <div class="mb-12 border-b border-dark-border pb-4">
+            <h1 class="text-4xl font-heading font-bold text-text-default mb-1 text-center">Cosmic Combat</h1>
+            <p class="text-xl text-project-meta text-center">Solo Developer | Scratch</p>
+        </div>
+
+        <!-- 3. About and Project Info Sections (2-Column Grid) -->
+        <div class="w-[80%] mx-auto mb-12">
+            <div class="grid grid-cols-2 gap-8">
+
+                <!-- Left Column: About This Project -->
+                <div class="bg-light-charcoal-bg p-10 rounded-xl shadow-md">
+                    <h3 class="text-2xl font-heading font-bold text-charcoal-accent mb-4 border-b border-dark-border/50 pb-2">About This Project</h3>
+                    <div class="text-md leading-relaxed text-text-default space-y-3">
+                        <p>
+                            CosmicCombat is a 2D space shooter I built in Scratch for Harvard's CS50 problem set, completed in just 2 days. The concept was simple but intentional—I wanted to create a game that could make math practice actually fun for kids who struggle with or dislike the subject. Instead of traditional alien enemies, I used numbers as the adversaries, so players are essentially "fighting" math while playing an engaging arcade shooter. The game features WASD movement controls, mouse-based rotation, progressive difficulty across 2 levels, and an endless scoring system that keeps players engaged beyond the structured levels.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Right Column: Project Info -->
+                <div class="bg-light-charcoal-bg p-10 rounded-xl shadow-md">
+                    <h3 class="text-2xl font-heading font-bold text-charcoal-accent mb-4 border-b border-dark-border/50 pb-2">Project Info</h3>
+                    <ul class="text-md leading-relaxed text-text-default space-y-2">
+                        <li class="font-semibold">Game: <span class="text-project-meta font-normal opacity-100">CosmicCombat</span></li>
+                        <li class="font-semibold">Course: <span class="text-project-meta font-normal opacity-100">CS50: Introduction to Computer Science (Harvard/edX)</span></li>
+                        <li class="font-semibold">Duration: <span class="text-project-meta font-normal opacity-100">2 Days</span></li>
+                        <li class="font-semibold">Language: <span class="text-project-meta font-normal opacity-100">Scratch (Visual Scripting Language)</span></li>
+                        <li class="font-semibold">Role: <span class="text-project-meta font-normal opacity-100">Solo Developer</span></li>
+                        <li class="font-semibold">Genre: <span class="text-project-meta font-normal opacity-100">2D Top-Down Arcade Shooter</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Mechanics Section (Replaced Core Mechanics) -->
+        <div class="w-[90%] mx-auto mb-12">
+            <div class="bg-light-charcoal-bg p-10 rounded-xl shadow-md">
+                <h3 class="text-2xl font-heading font-bold text-charcoal-accent mb-4 border-b border-dark-border/50 pb-2">Gameplay Mechanics</h3>
+                <div class="text-md leading-relaxed text-text-default space-y-3">
+                    <p>
+                        I built CosmicCombat using Scratch, which is a visual scripting language that uses drag-and-drop blocks instead of traditional code. The mechanics in this game are pretty straightforward since Scratch is designed for simplicity—I didn't need complex math equations or physics calculations to make things work.
+                    </p>
+                    <p>
+                        For the spaceship movement, I used Scratch's built-in blocks like "Change X by __" and "Change Y by __" to handle WASD controls. Each keypress just shifts the position by a set amount in the corresponding direction. Rotation was even simpler—Scratch has a "Point Towards [mouse pointer]" block that automatically rotates the sprite to face wherever the cursor is, which gave me that mouse-aiming feature without any trigonometry.
+                    </p>
+                    <p>
+                        The enemy movement uses similar logic. I used the "Point Towards [spaceship]" block so numbers constantly face the player, then "Move __ steps" to make them chase.
+                    </p>
+                    <p>
+                        The bullet system works like this: when the player presses 'E', a bullet sprite spawns at the spaceship's current position and rotation. Then it uses "Move 20 steps" each frame in the direction the mouse was pointing when fired. The bullet keeps moving in that straight line until it either hits an enemy or leaves the screen. When a bullet collides with a number enemy, the score increases by one, and once the score reaches the threshold (like 5 points), the next level loads with more enemies spawned on screen. It's a clean loop—shoot, score, level up—all built with Scratch's visual blocks doing the heavy lifting.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. What I Learned Section -->
+        <div class="w-[90%] mx-auto mb-12">
+            <div class="bg-light-charcoal-bg p-10 rounded-xl shadow-md">
+                <h3 class="text-2xl font-heading font-bold text-charcoal-accent mb-4 border-b border-dark-border/50 pb-2">What I Learned</h3>
+                <div class="text-md leading-relaxed text-text-default space-y-3">
+                    <p>
+                        Working with Scratch taught me how to think in pseudocode, which has been super helpful for planning projects. Because Scratch uses visual blocks that read almost like plain English, writing out my logic on paper before coding became way easier—the pseudocode I'd sketch in my notebook basically matched the block structure I'd use in Scratch. There wasn't much mental translation needed between planning and implementation, which sped up my workflow.
+                    </p>
+                    <p>
+                        Beyond that, Scratch really sharpened my logical thinking and problem-solving skills. Since you can't just brute-force solutions with complex syntax, you have to break problems down into clear, step-by-step logic. It forced me to think about cause-and-effect, event handling, and how different systems interact with each other. Even though it's beginner-friendly and designed for kids, it builds solid programming fundamentals that translate directly to more advanced languages. It's honestly one of the best starting points for understanding how code logic flows before you dive into text-based programming.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="container mx-auto px-6 lg:px-24 py-8 text-center text-sm text-project-meta border-t border-dark-border">
+        <p>&copy; <span id="current-year"></span> Ankit Dabas. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Video Player Script -->
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = Math.floor(seconds % 60);
+            const formattedSeconds = remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds;
+            return `${minutes}:${formattedSeconds}`;
+        }
+
+        function updateProgressBar(video, progressBar, currentTimeSpan, durationSpan) {
+            if (!video || !progressBar || !currentTimeSpan || !durationSpan) return;
+            const percentage = (video.currentTime / video.duration) * 100;
+            progressBar.style.setProperty('--value', percentage + '%');
+            progressBar.value = percentage;
+            currentTimeSpan.textContent = formatTime(video.currentTime);
+            if (durationSpan && !isNaN(video.duration)) {
+                durationSpan.textContent = formatTime(video.duration);
+            }
+        }
+
+        function initVideoPlayer() {
+            const video = document.getElementById('project-video');
+            const progressBar = document.getElementById('progress-bar');
+            const currentTimeSpan = document.getElementById('current-time');
+            const durationSpan = document.getElementById('video-duration');
+
+            if (!video) return;
+
+            video.addEventListener('ended', () => {
+                video.pause();
+                video.currentTime = 0;
+            });
+
+            video.addEventListener('loadedmetadata', () => {
+                if (durationSpan) durationSpan.textContent = formatTime(video.duration);
+            });
+
+            if (video.readyState >= 2) {
+                if (durationSpan) durationSpan.textContent = formatTime(video.duration);
+            }
+
+            video.addEventListener('timeupdate', () => {
+                updateProgressBar(video, progressBar, currentTimeSpan, durationSpan);
+            });
+
+            if (progressBar) {
+                progressBar.addEventListener('input', () => {
+                    if (!isNaN(video.duration)) {
+                        const newTime = (progressBar.value / 100) * video.duration;
+                        video.currentTime = newTime;
+                        updateProgressBar(video, progressBar, currentTimeSpan, durationSpan);
+                    } else {
+                        console.error("Video duration not loaded, cannot seek.");
+                    }
+                });
+            }
+
+            video.muted = true;
+            if (video.readyState >= 3) {
+                video.play();
+            } else {
+                video.addEventListener('canplay', () => {
+                    video.play();
+                }, { once: true });
+            }
+
+            if (progressBar) progressBar.style.setProperty('--value', '0%');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initVideoPlayer();
+        });
+    </script>
+</body>
+</html>

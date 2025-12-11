@@ -1,0 +1,889 @@
+﻿ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legacy of Blade | Project Details</title>
+    <!-- Load Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Configure Tailwind for custom colors and font (Matches Main Site) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // GLASSMORHISM LIGHT COLORS
+                        'bg-primary': '#F0F0F0', // Slightly darker background
+                        'text-default': '#2A2A2A', // Dark Gray Text
+                        'charcoal-accent': '#333333', // Dark Charcoal Accent Color
+                        'card-bg': 'rgba(255, 255, 255, 0.5)', // Transparent White for Glass
+                        'dark-border': '#E0E0E0', // Light Gray Border
+                        'project-meta': '#555555', // Mid Gray for metadata
+                        'light-charcoal-bg': '#D3D3D3', // HEX code for light sections
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        heading: ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+        .glass-card {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.25);
+        }
+
+        /* Custom progress bar styling for seek functionality */
+        .custom-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--tw-colors-charcoal-accent);
+            cursor: pointer;
+            margin-top: -5px;
+            box-shadow: 0 0 5px rgba(51, 51, 51, 0.5);
+        }
+
+        .custom-range::-moz-range-thumb {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--tw-colors-dark-border);
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(51, 51, 51, 0.5);
+        }
+
+        .custom-range {
+            height: 5px;
+            background: var(--tw-colors-dark-border);
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        /* Styling for the playback time fill */
+        #progress-bar {
+            background: linear-gradient(to right, var(--tw-colors-charcoal-accent) var(--value), var(--tw-colors-dark-border) var(--value));
+        }
+
+        /* Video needs to be styled for custom controls */
+        #project-video {
+            -webkit-appearance: none;
+            appearance: none;
+            display: block;
+            cursor: default; /* Changed cursor to default as video is no longer clickable */
+        }
+
+            /* Hide the poster image completely on load to prevent flash */
+            #project-video:not([poster]) {
+                background-image: none;
+            }
+
+        /* Controls should not interfere with video clicks */
+        #video-controls {
+            pointer-events: none; /* Make the container non-interactive */
+        }
+
+            #video-controls > * {
+                pointer-events: auto; /* Re-enable interaction for children (seek bar and button) */
+            }
+
+        /* Explicit Manual Size Control for Video Player */
+        .project-video-size {
+            /* Saved Manual Size Control */
+            width: 1200px;
+            height: 580px;
+        }
+
+
+        /* NEW: Half-Light Background Gradient - Now uses #D3D3D3 for the darker end */
+        .body-gradient {
+            background: linear-gradient(to bottom, #F0F0F0 0%, /* Light gray top */
+            #F5F5F5 50vh, /* Mid-point */
+            #D3D3D3 100% /* CHANGED: Medium gray bottom */
+            );
+            background-attachment: fixed; /* Keep the gradient fixed while scrolling */
+        }
+
+        /* --- NEW ASPECT RATIO FOR COMBAT VIDEO (4:5) --- */
+        .aspect-ratio-box {
+            position: relative;
+            height: 0;
+        }
+
+        .aspect-w-4 {
+            --tw-aspect-w: 4;
+            --tw-aspect-h: 5;
+            padding-bottom: calc(var(--tw-aspect-h) / var(--tw-aspect-w) * 100%);
+        }
+
+        .aspect-h-5 {
+            --tw-aspect-h: 5;
+        }
+        /* --- NEW ASPECT RATIO FOR HUD (16:9) --- */
+        .aspect-w-16 {
+            --tw-aspect-w: 16;
+            --tw-aspect-h: 9;
+            padding-bottom: calc(var(--tw-aspect-h) / var(--tw-aspect-w) * 100%);
+        }
+
+        .aspect-h-9 {
+            --tw-aspect-h: 9;
+        }
+    </style>
+</head>
+<body class="text-text-default font-sans antialiased body-gradient">
+
+    <!-- Fixed Navigation Header --><header class="fixed top-0 left-0 right-0 bg-bg-primary z-50 shadow-md">
+        <div class="container mx-auto px-6 lg:px-24 py-4 flex justify-between items-center">
+            <a href="../index.html" class="text-xl font-heading font-bold text-charcoal-accent">Ankit Dabas</a>
+            <a href="../index.html#projects" class="sm:text-sm text-charcoal-accent font-semibold hover:underline">← Back to Portfolio</a>
+        </div>
+    </header>
+
+    <!-- Main Project Detail Content - Adjusted top padding for fixed header --><div class="container mx-auto px-6 lg:px-24 py-12 pt-32">
+
+        <!-- === NEW STRUCTURE: Full Width Video, Details Stacked Below === -->
+        <!-- 1. Video Player (Explicit Pixel Size, and Centered) -->
+        <div class="w-full h-full flex justify-center mb-8">
+            <!-- ADDED: project-video-size class for explicit size control -->
+            <div class="project-video-size">
+                <div class="relative w-full h-full">
+
+                    <!-- Video Element - FIXED: Corrected poster and src paths -->
+                    <video id="project-video"
+                           muted playsinline
+                           poster="../projects/video/Legacy_of_Blade/Legacy of Blade.mp4"
+                           class="w-full h-full object-cover shadow-2xl"
+                           preload="metadata"
+                           controls="false"
+                           playsinline>
+                        <source src="../projects/video/Legacy_of_Blade/Legacy of Blade.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+
+                    <!-- Control Bar (Seek Bar and Time Display ONLY) --><div id="video-controls" class="absolute inset-x-0 bottom-0 mx-auto w-full p-1">
+
+                        <!-- Seek Bar --><input type="range" id="progress-bar" value="0" min="0" max="100" step="0.1"
+                                                class="w-full custom-range transition-colors duration-100 mb-1">
+
+                        <!-- Control Row (Time Display ONLY) --><div class="flex items-center justify-end text-xs font-semibold text-bg-primary" style="text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);">
+
+                            <!-- Current Time / Duration --><div class="flex space-x-1">
+                                <span id="current-time">0:00</span>
+                                <span>/</span>
+                                <span id="video-duration">0:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Project Title & Position (Now below video) -->
+        <div class="mb-12 border-b border-dark-border pb-4">
+            <h1 class="text-4xl font-heading font-bold text-text-default mb-1 text-center">Legacy of Blade (2023)</h1>
+            <p class="text-xl text-project-meta text-center">Gameplay Programmer | 6 Months</p>
+        </div>
+
+
+        <!-- === NEW: About and Project Info Sections (Fixed Width, Aligned Grid) === -->
+        <!-- Main Container for the 2-Column Grid (About + Project Info) -->
+        <div class="w-[80%] mx-auto mb-12">
+            <div class="grid grid-cols-2 gap-8">
+
+                <!-- Column 1: About This Project -->
+                <div class="bg-light-charcoal-bg p-10 rounded-xl shadow-md">
+                    <h3 class="text-2xl font-heading font-bold text-charcoal-accent mb-4 border-b border-dark-border/50 pb-2">About This Project</h3>
+                    <p class="text-md leading-relaxed text-text-default">
+                        Legacy of Blade is a third-person action combat project I developed in Unreal Engine 4.27 using C++ and Blueprints. The focus was to build a responsive melee combat system and an axe recall mechanic inspired by God of War, while showcasing AI behavior, player interaction, and technical gameplay systems.
+                    </p>
+                </div>
+
+                <!-- Column 2: Project Info -->
+                <div class="bg-light-charcoal-bg p-10 rounded-xl shadow-md">
+                    <h3 class="text-2xl font-heading font-bold text-charcoal-accent mb-4 border-b border-dark-border/50 pb-2">Project Info</h3>
+                    <ul class="text-md leading-relaxed text-text-default space-y-2">
+                        <li class="font-semibold">Role: <span class="text-project-meta font-normal opacity-100">Sole Gameplay Programmer</span></li>
+                        <li class="font-semibold">Duration: <span class="text-project-meta font-normal opacity-100">6 Months (Self-Directed)</span></li>
+                        <li class="font-semibold">Challenge: <span class="text-project-meta font-normal opacity-100">Implementing Procedural Generation using C++.</span></li>
+                        <li class="font-semibold">Status: <span class="text-project-meta font-normal opacity-100">Completed Prototype</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- === END NEW SECTIONS === -->
+        <!-- 3. Core Systems & Mechanics Section (NEW ALTERNATING LAYOUT) -->
+        <div class="w-[80%] mx-auto bg-light-charcoal-bg p-10 rounded-xl shadow-md mb-20">
+            <h3 class="text-3xl font-heading font-bold text-text-default mb-6 border-b border-dark-border pb-2">
+                Core Systems & Mechanics
+            </h3>
+
+            <!-- SECTION 1: Combat System (Left: Text, Right: Media) -->
+            <div class="mb-12">
+                <h4 class="text-xl font-heading font-bold text-charcoal-accent mb-4 mt-6">Combat System</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                    <!-- Left Column: Text (Content from screenshot) -->
+                    <div class="space-y-4">
+                        <p class="text-md leading-relaxed text-project-meta">
+                            The combat system is built entirely using <strong class="font-bold">C++ and Blueprints</strong>, combining animation-driven logic, collision detection, and reactive enemy AI. Each weapon uses a dedicated <strong class="font-bold">Box Collision Component</strong>, which activates only during the correct animation frames to ensure accurate hit registration and prevent false overlaps.
+                        </p>
+
+                        <p class="text-md leading-relaxed text-project-meta">
+                            Enemy behavior is managed through a <strong class="font-bold">Finite State Machine (FSM)</strong> written in C++, handling states like <em class="italic">Idle</em>, <em class="italic">MoveToTarget</em>, <em class="italic">Attack</em>, and <em class="italic">Dead</em>. This guarantees that enemies perform one clear action at a time and react intelligently to player attacks.
+                        </p>
+
+                        <h5 class="text-lg font-heading font-bold text-text-default mb-3 mt-6">Technical features:</h5>
+                        <ul class="list-disc text-left space-y-2 mb-6 pl-8">
+                            <li class="text-md text-project-meta"><strong class="font-bold">Timers</strong> control attack intervals, recovery, and combo chains.</li>
+                            <li class="text-md text-project-meta"><strong class="font-bold">Montage sections</strong> sync animation events with active hit windows.</li>
+                            <li class="text-md text-project-meta"><strong class="font-bold">Particle and sound triggers</strong> enhance real-time combat feedback.</li>
+                            <li class="text-md text-project-meta"><strong class="font-bold">Modular design</strong> allows easy integration of new weapons or enemy types.</li>
+                        </ul>
+
+                        <p class="text-md leading-relaxed text-project-meta">
+                            This system delivers fast, reliable, and visually responsive melee combat with clean gameplay architecture.
+                        </p>
+                    </div>
+                    <!-- Right Column: Media (VIDEO ADDED) -->
+                    <!-- FIXED: Added 4:5 aspect ratio box and custom controls -->
+                    <div class="w-full h-full aspect-ratio-box aspect-w-4 aspect-h-5 rounded-lg shadow-inner relative">
+                        <video id="combat-video" autoplay loop muted playsinline class="absolute top-0 left-0 rounded-lg object-contain w-full h-full">
+                            <!-- FIXED: object-contain -->
+                            <!-- FIXED: Path corrected to ./video/ -->
+                            <source src="./video/Legacy_of_Blade/CombatSystem.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <!-- Center Play/Pause Button (Hidden by default) --><button id="combat-play-pause-btn" class="hidden absolute inset-0 m-auto w-16 h-16 text-white text-opacity-80 hover:text-opacity-100 transition-all z-10">
+                            <svg id="combat-play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9z" /></svg>
+                            <svg id="combat-pause-icon" xmlns="http://www.w3.org/2000/svg" class="hidden" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
+                        </button>
+                        <!-- Mute/Unmute Button --><button id="combat-mute-btn" class="absolute bottom-4 right-4 w-6 h-6 text-white text-opacity-80 hover:text-opacity-100 transition-all z-10">
+                            <svg id="combat-mute-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" /></svg>
+                            <svg id="combat-unmute-icon" xmlns="http://www.w3.org/2000/svg" class="hidden" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" /></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: Weapon (Left: Media, Right: Text) --><div>
+                <h4 class="text-xl font-heading font-bold text-charcoal-accent mb-4 mt-6">Weapon System (Sword & Leviathan Axe)</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                    <!-- Left Column: Media (VIDEO ADDED) --><div class="w-full h-full aspect-ratio-box aspect-w-4 aspect-h-5 rounded-lg shadow-inner relative md:order-1">
+                        <!-- Replaced placeholder with video --><video id="weapon-video" autoplay loop muted playsinline class="absolute top-0 left-0 rounded-lg object-cover w-full h-full">
+                            <!-- FIXED: Path corrected to ./video/ -->
+                            <source src="./video/Legacy_of_Blade/Levithan_Axe.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <!-- Center Play/Pause Button (Hidden by default) --><button id="weapon-play-pause-btn" class="hidden absolute inset-0 m-auto w-16 h-16 text-white text-opacity-80 hover:text-opacity-100 transition-all z-10">
+                            <svg id="weapon-play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9z" /></svg>
+                            <svg id="weapon-pause-icon" xmlns="http://www.w3.org/2000/svg" class="hidden" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
+                        </button>
+                        <!-- Mute/Unmute Button --><button id="weapon-mute-btn" class="absolute bottom-4 right-4 w-6 h-6 text-white text-opacity-80 hover:text-opacity-100 transition-all z-10">
+                            <svg id="weapon-mute-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" /></svg>
+                            <svg id="weapon-unmute-icon" xmlns="http://www.w3.org/2000/svg" class="hidden" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" /></svg>
+                        </button>
+                    </div>
+                    <!-- Right Column: Text (Using the detailed text from previous session) --><div class="space-y-4 md:order-2">
+                        <p class="text-md leading-relaxed text-project-meta">
+                            I developed a versatile weapon system in Unreal Engine (<strong class="font-bold">C++</strong>) that supports both close-range sword combat and a <strong class="font-bold">throwable-recallable Leviathan Axe</strong> inspired by <em class="italic">God of War</em>. This project demonstrates strong understanding of <strong class="font-bold">actor components</strong>, <strong class="font-bold">collision handling</strong>, and <strong class="font-bold">math-driven weapon mechanics</strong>.
+                        </p>
+                        <h5 class="text-lg font-heading font-bold text-text-default mb-3 mt-6">Key Technical Features:</h5>
+                        <ul class="list-disc text-left space-y-2 mb-6 pl-8">
+                            <li class="text-md text-project-meta"><strong class="font-bold">Axe Throw</strong>: Uses <strong class="font-bold">FMath::Lerp</strong> for smooth position interpolation and continuous rotation for realistic spin visuals with spatial flight audio.</li>
+                            <li class="text-md text-project-meta"><strong class="font-bold">Axe Recall</strong>: Implemented a custom <strong class="font-bold">BoomerangeCurve()</strong> using a <strong class="font-bold">Quadratic Bézier Curve</strong> (<strong class="font-bold">P = (1-t)²P₀ + 2(1-t)t*P₁ + t²P₂</strong>) for natural boomerang-like return motion.</li>
+                            <li class="text-md text-project-meta"><strong class="font-bold">Crosshair-Based Aiming</strong>: Calculates direction using <strong class="font-bold">PlayerController->DeprojectScreenPositionToWorld()</strong> for accurate 3D targeting.</li>
+                            <li class="text-md text-project-meta"><strong class="font-bold">Collision Control</strong>: The <strong class="font-bold">UBoxComponent (CombatCollision)</strong> remains disabled by default and activates only during attack or throw using <strong class="font-bold">ActivateCollision()</strong>, ensuring precise hit detection.</li>
+                        </ul>
+                        <p class="text-md leading-relaxed text-project-meta">
+                            This system blends physics, math, and animation into responsive, cinematic weapon gameplay.
+                            </D>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEW SECTION: Maheshwara Actor (Technical Details) --><div class="mt-12">
+                <h4 class="text-xl font-heading font-bold text-charcoal-accent mb-4 mt-6">Maheshwara Actor (Technical Details)</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                    <!-- Left Column: Text (Content from screenshot) --><div class="space-y-4">
+                        <p class="text-md leading-relaxed text-project-meta">
+                            The <strong class="font-bold">Maheshwara Actor</strong> is a fully scripted <strong class="font-bold">C++ interaction system</strong> that handles the process of unlocking and spawning the <strong class="font-bold">Leviathan Axe</strong> based on player progression. It uses a <strong class="font-bold">Sphere Collision Component</strong> to detect when the player enters its range and communicates directly with the Player character class to check the current <strong class="font-bold">coin count</strong>. Depending on the result, it dynamically plays the appropriate dialogue using <strong class="font-bold">UGameplayStatics::PlaySound2D()</strong> and displays a <strong class="font-bold">Widget</strong> prompt for interaction. When the player holds the <strong class="font-bold">'E' key</strong> long enough, the system validates the input, plays a final dialogue sequence, triggers <strong class="font-bold">Niagara particle effects</strong>, and spawns the <strong class="font-bold">Leviathan Axe</strong> actor into the world through <strong class="font-bold">SpawnActor<AWeapon>()</strong>. Timers control dialogue pacing and actor lifetime, while an <strong class="font-bold">AudioComponent</strong> manages continuous voice playback for immersive feedback.
+                        </p>
+                      
+                    </div>
+                    <!-- Right Column: Media (VIDEO ADDED) --><div class="w-full h-full aspect-ratio-box aspect-w-4 aspect-h-5 rounded-lg shadow-inner relative">
+                        <!-- Replaced placeholder with video -->
+                        <video id="maheshwara-video" autoplay loop muted playsinline class="absolute top-0 left-0 rounded-lg object-cover w-full h-full">
+                            <!-- FIXED: Path corrected to ./video/ -->
+                            <source src="./video/Legacy_of_Blade/Maheshwara.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <!-- Center Play/Pause Button (Hidden by default) -->
+                        <button id="maheshwara-play-pause-btn" class="hidden absolute inset-0 m-auto w-16 h-16 text-white text-opacity-80 hover:text-opacity-100 transition-all z-10">
+                            <svg id="maheshwara-play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9z" /></svg>
+                            <svg id="maheshwara-pause-icon" xmlns="http://www.w3.org/2000/svg" class="hidden" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
+                        </button>
+                        <!-- Mute/Unmute Button -->
+                        <button id="maheshwara-mute-btn" class="absolute bottom-4 right-4 w-6 h-6 text-white text-opacity-80 hover:text-opacity-100 transition-all z-10">
+                            <svg id="maheshwara-mute-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" /></svg>
+                            <svg id="maheshwara-unmute-icon" xmlns="http://www.w3.org/2000/svg" class="hidden" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" /></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEW SECTION: Object Interaction (Alternating Layout) -->
+            <div class="mt-12">
+                <h4 class="text-xl font-heading font-bold text-charcoal-accent mb-4 mt-6">Object Interaction Section</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                    <!-- Left Column: Media (Placeholder) -->
+                    <div class="w-full h-full aspect-ratio-box aspect-w-4 aspect-h-5 rounded-lg shadow-inner relative md:order-1">
+                        <video id="interaction-video" autoplay loop muted playsinline class="absolute top-0 left-0 rounded-lg object-cover w-full h-full">
+                            <!-- FIXED: Path corrected to ./video/ -->
+                            <source src="./video/Legacy_of_Blade/Object Interaction.mp4" type="video/mp4"> <!-- Placeholder Path -->
+                            Your browser does not support the video tag.
+                        </video>
+                        <!-- Center Play/Pause Button (Hidden by default) -->
+                        <button id="interaction-play-pause-btn" class="hidden absolute inset-0 m-auto w-16 h-16 text-white text-opacity-80 hover:text-opacity-100 transition-all z-10">
+                            <svg id="interaction-play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9z" /></svg>
+                            <svg id="interaction-pause-icon" xmlns="http://www.w3.org/2000/svg" class="hidden" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
+                        </button>
+                        <!-- Mute/Unmute Button -->
+                        <button id="interaction-mute-btn" class="absolute bottom-4 right-4 w-6 h-6 text-white text-opacity-80 hover:text-opacity-100 transition-all z-10">
+                            <svg id="interaction-mute-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" /></svg>
+                            <svg id="interaction-unmute-icon" xmlns="http://www.w3.org/2000/svg" class="hidden" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" /></svg>
+                        </button>
+                    </div>
+
+                    <!-- Right Column: Text -->
+                    <div class="space-y-4 md:order-2">
+                        <p class="text-md leading-relaxed text-project-meta">
+                            I developed a set of dynamic, reusable world-interaction objects. These components were built primarily in <strong class="font-bold">C++</strong> and use <strong class="font-bold">Overlap Events</strong> and <strong class="font-bold">C++ Interfaces</strong> to ensure they can affect both the player and enemies in a modular way.
+                        </p>
+
+                        <ul class="list-disc text-left space-y-3 mb-6 pl-8">
+                            <li class="text-md text-project-meta"><strong class="font-bold">Bomb:</strong> I set up a simple overlap system so that when the player or even an enemy steps on it, the bomb explodes and applies damage to nearby actors. It was my first time handling area-based damage, and it felt great to see both sides react to it.</li>
+                            <li class="text-md text-project-meta"><strong class="font-bold">Coins:</strong> Every time the player collects a coin, the value updates instantly on the HUD. These coins aren’t just for show — they’re used later to unlock the Leviathan Axe from Maheshwara.</li>
+                            <li class="text-md text-project-meta"><strong class="font-bold">Spike Trap:</strong> This trap hurts both enemies and players. When triggered, spikes shoot up through an animation, deal damage, and then retract — simple but satisfying to see it working.</li>
+                            <li class="text-md text-project-meta"><strong class="font-bold">Healing Drink:</strong> It restores 25 health when collected, but only if the player isn’t already at full health.</li>
+                            <li class="text-md text-project-meta"><strong class="font-bold">Auto Door:</strong> This was my favorite to make. After learning <strong class="font-bold">Interpolation (FMath::Lerp)</strong>, I wanted to try something fun, so I built a door that smoothly opens upward when the player steps on a pressure stone, stays open for a few seconds, and then closes automatically. It was the first mechanic where I combined <strong class="font-bold">collision detection</strong>, two static meshes, and movement interpolation — and it really made the level feel dynamic.</li>
+                        
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEW SECTION: HUD & UI System (Text Left, Image Gallery Right) -->
+            <div class="mt-12">
+                <h4 class="text-xl font-heading font-bold text-charcoal-accent mb-4">HUD & UI System</h4>
+
+                <p class="text-md leading-relaxed text-project-meta mb-8">
+                    I implemented a complete HUD and UI system in my 3D sword-fighting project using a mix of <strong class="font-bold">C++</strong> and <strong class="font-bold">Unreal Engine Widgets</strong>. The gameplay HUD updates dynamically based on the player’s actions, while the frontend menus manage game flow and settings.
+                </p>
+
+                <div class="max-w-12xl mx-auto mb-8">
+                    <div class="flex justify-center items-center gap-4">
+                        <button id="hud-prev-btn" class="w-10 h-10 text-white bg-black/30 rounded-full flex-shrink-0 flex items-center justify-center hover:bg-black/50 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+
+                        <div class="grid grid-cols-2 gap-4 w-full">
+                            <img id="hud-image-1" src="" alt="HUD UI Screenshot 1" class="rounded-lg object-contain w-full h-auto shadow-md">
+                            <img id="hud-image-2" src="" alt="HUD UI Screenshot 2" class="rounded-lg object-contain w-full h-auto shadow-md">
+                        </div>
+
+                        <button id="hud-next-btn" class="w-10 h-10 text-white bg-black/30 rounded-full flex-shrink-0 flex items-center justify-center hover:bg-black/50 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="hud-counter" class="text-center text-sm text-project-meta mt-2">
+                        Images 1 & 2 / 5
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <p class="text-md leading-relaxed text-project-meta">
+                        For the enemy health bar, I created a floating widget that only appears when the player is close to an enemy. Its position is updated every frame by converting the enemy’s world position into screen space using <strong class="font-bold">ProjectWorldLocationToScreen()</strong>. After calculating the screen coordinates, I adjust the Y-offset and set the widget’s position and size in the viewport, creating a clean floating health bar that follows the enemy smoothly.
+                    </p>
+                    <p class="text-md leading-relaxed text-project-meta">
+                        For interaction prompts like the <strong class="font-bold">‘E’ Key</strong> icon near the Maheshwara actor, I used a <strong class="font-bold">Widget Component</strong> attached directly to the actor. This allows the prompt to exist in 3D space and appear only when the player enters the interaction range.
+                    </p>
+                    <p class="text-md leading-relaxed text-project-meta">
+                        In addition, I created <strong class="font-bold">Main Menu</strong>, <strong class="font-bold">Pause Menu</strong>, and <strong class="font-bold">Settings/Resolution Menu</strong>, forming the project’s complete frontend UI system.
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+     <div class="w-[80%] mx-auto bg-light-charcoal-bg p-10 rounded-xl shadow-md mb-20">
+         <h3 class="text-3xl font-heading font-bold text-text-default mb-6 border-b border-dark-border pb-2">
+             Challenges & Solutions
+         </h3>
+         <div class="mt-6 grid grid-cols-[auto_1fr] gap-x-2">
+             <h4 class="text-xl font-heading font-bold text-text-default">
+                 Levithan Axe:-
+             </h4>
+             <div class="space-y-4">
+                 <p class="text-md leading-relaxed text-project-meta">
+                     When I was working on the Leviathan-style axe, one of the biggest problems I faced was getting the axe return movement, the player’s recall animation, and the axe recall sound to match perfectly.
+                     Because all three started at the same time, the timing would break depending on the axe’s distance. If the axe was close, it reached too early. If the axe was far, it reached too late. The result was a mismatch every time.
+                 </p>
+                 <p class="text-md leading-relaxed text-project-meta">
+                     To fix this, I redesigned the system so the axe always returns in a fixed duration, matching the length of the recall animation.
+                     My recall animation is 0.7 seconds, so I made the axe movement always complete in exactly 0.7 seconds, using time-based interpolation instead of speed. This ensured perfect sync, no matter how far the axe is.
+                 </p>
+             </div>
+         </div>
+
+
+         <div class="mt-6 grid grid-cols-[auto_1fr] gap-x-2">
+             <h4 class="text-xl font-heading font-bold text-text-default">
+                 Boss Enemy:-
+             </h4>
+             <div class="space-y-4">
+                 <p class="text-md leading-relaxed text-project-meta">
+                     When creating the Boss enemy, I wanted it to feel completely different from normal enemies—both visually and in combat behavior. I chose the Buff_Red character from Paragon Minions because it looked powerful and aggressive, which fit the role perfectly.
+                 </p>
+                 <p class="text-md leading-relaxed text-project-meta">
+                     One of the biggest technical challenges was attack <strong class="font-bold">Collision detection</strong>. The boss uses four attacks—left punch, right punch, kick, and a heavy smash. Initially, I added separate Box Collisions to each hand and leg, but this caused unnecessary <strong class="font-bold">performance</strong> overhead. To solve this, I <strong class="font-bold">redesigned</strong> the system using one Box Collision and attached it dynamically to different <strong class="font-bold">sockets</strong> on the skeletal mesh (left hand, right hand, and leg) depending on which attack animation was playing. This simplified logic, <strong class="font-bold">improved performance</strong>, and kept hit detection <strong class="font-bold">accurate</strong>.
+                 </p>
+
+                 <p class="text-md leading-relaxed text-project-meta">
+                     Another major challenge was the kick animation. The Paragon pack didn’t include any kick animations, so I downloaded one from Mixamo—but its skeleton didn’t match the Paragon skeleton at all. The animation looked completely broken. I learned about <strong class="font-bold">retargeting</strong>, mapped the Mixamo skeleton to <strong class="font-bold">Unreal’s Humanoid rig'</strong>, then <strong class="font-bold">retargeted</strong> that animation to the <strong class="font-bold">Paragon skeleton</strong>. After adjusting <strong class="font-bold">pelvis height, root motion</strong>, and <strong class="font-bold">fixing</strong> twisting bones, the kick animation finally played correctly.
+                 </p>
+             </div>
+          </div>
+
+     </div>
+
+        <!-- Footer Placeholder (Simple, minimal) --><footer class="container mx-auto px-6 lg:px-24 py-8 text-center text-sm text-project-meta border-t border-dark-border">
+            <p>&copy; <span id="current-year"></span> Ankit Dabas. All Rights Reserved.</p>
+        </footer>
+
+        <script>
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+            // --- Custom Video Player Logic (Main Video) ---
+
+            function formatTime(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const remainingSeconds = Math.floor(seconds % 60);
+                const formattedSeconds = remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds;
+                return `${minutes}:${formattedSeconds}`;
+            }
+
+            function updateProgressBar(video, progressBar, currentTimeSpan, durationSpan) {
+                const percentage = (video.currentTime / video.duration) * 100;
+                progressBar.style.setProperty('--value', percentage + '%');
+                progressBar.value = percentage;
+                currentTimeSpan.textContent = formatTime(video.currentTime);
+                if (durationSpan && !isNaN(video.duration)) {
+                    durationSpan.textContent = formatTime(video.duration);
+                }
+            }
+
+            function initVideoPlayer() {
+                const video = document.getElementById('project-video');
+                const progressBar = document.getElementById('progress-bar');
+                const currentTimeSpan = document.getElementById('current-time');
+                const durationSpan = document.getElementById('video-duration');
+
+                if (!video) return; // Guard clause for main video player
+
+                video.addEventListener('ended', () => {
+                    video.pause();
+                    video.currentTime = 0; // Reset to start
+                });
+
+                video.addEventListener('loadedmetadata', () => {
+                    if (durationSpan) durationSpan.textContent = formatTime(video.duration);
+                });
+
+                if (video.readyState >= 2) {
+                    if (durationSpan) durationSpan.textContent = formatTime(video.duration);
+                }
+
+                video.addEventListener('timeupdate', () => {
+                    updateProgressBar(video, progressBar, currentTimeSpan, durationSpan);
+                });
+
+                progressBar.addEventListener('input', () => {
+                    if (!isNaN(video.duration)) {
+                        const newTime = (progressBar.value / 100) * video.duration;
+                        video.currentTime = newTime;
+                        updateProgressBar(video, progressBar, currentTimeSpan, durationSpan);
+                    } else {
+                        console.error("Video duration not loaded, cannot seek.");
+                    }
+                });
+
+                video.muted = true;
+                if (video.readyState >= 3) {
+                    video.play();
+                } else {
+                    video.addEventListener('canplay', () => {
+                        video.play();
+                    }, { once: true });
+                }
+
+                progressBar.style.setProperty('--value', '0%');
+            }
+
+            // --- NEW: Custom Video Player Logic (Combat System Video) ---
+            function initCombatVideoPlayer() {
+                const video = document.getElementById('combat-video');
+                const playPauseBtn = document.getElementById('combat-play-pause-btn');
+                const playIcon = document.getElementById('combat-play-icon');
+                const pauseIcon = document.getElementById('combat-pause-icon');
+                const muteBtn = document.getElementById('combat-mute-btn');
+                const muteIcon = document.getElementById('combat-mute-icon');
+                const unmuteIcon = document.getElementById('combat-unmute-icon');
+
+                if (!video) return; // Guard clause
+
+                function togglePlayPause() {
+                    if (video.paused || video.ended) {
+                        video.play();
+                    } else {
+                        video.pause();
+                    }
+                }
+
+                // Show/Hide Center Button
+                video.addEventListener('play', () => {
+                    playPauseBtn.classList.add('hidden');
+                    playIcon.classList.add('hidden');
+                    pauseIcon.classList.remove('hidden');
+                });
+
+                video.addEventListener('pause', () => {
+                    playPauseBtn.classList.remove('hidden');
+                    playIcon.classList.remove('hidden');
+                    pauseIcon.classList.add('hidden');
+                });
+
+                // Click video or center button to play/pause
+                video.addEventListener('click', togglePlayPause);
+                playPauseBtn.addEventListener('click', togglePlayPause);
+
+                // Mute/Unmute Button
+                muteBtn.addEventListener('click', (e) => { // Added event 'e'
+                    e.stopPropagation(); // Prevent click from bubbling to video
+                    video.muted = !video.muted;
+                    if (video.muted) {
+                        muteIcon.classList.remove('hidden');
+                        unmuteIcon.classList.add('hidden');
+                    } else {
+                        muteIcon.classList.add('hidden');
+                        unmuteIcon.classList.remove('hidden');
+                    }
+                });
+
+                // Initial state
+                if (video.muted) {
+                    muteIcon.classList.remove('hidden');
+                    unmuteIcon.classList.add('hidden');
+                } else {
+                    muteIcon.classList.add('hidden');
+                    unmuteIcon.classList.remove('hidden');
+                }
+
+                if (video.paused) {
+                    playPauseBtn.classList.remove('hidden');
+                    playIcon.classList.remove('hidden');
+                    pauseIcon.classList.add('hidden');
+                } else {
+                    playPauseBtn.classList.add('hidden');
+                }
+            }
+
+            // --- NEW: Custom Video Player Logic (Weapon System Video) ---
+            function initWeaponVideoPlayer() {
+                const video = document.getElementById('weapon-video');
+                const playPauseBtn = document.getElementById('weapon-play-pause-btn');
+                const playIcon = document.getElementById('weapon-play-icon');
+                const pauseIcon = document.getElementById('weapon-pause-icon');
+                const muteBtn = document.getElementById('weapon-mute-btn');
+                const muteIcon = document.getElementById('weapon-mute-icon');
+                const unmuteIcon = document.getElementById('weapon-unmute-icon');
+
+                if (!video) return; // Guard clause
+
+                function togglePlayPause() {
+                    if (video.paused || video.ended) {
+                        video.play();
+                    } else {
+                        video.pause();
+                    }
+                }
+
+                // Show/Hide Center Button
+                video.addEventListener('play', () => {
+                    playPauseBtn.classList.add('hidden');
+                    playIcon.classList.add('hidden');
+                    pauseIcon.classList.remove('hidden');
+                });
+
+                video.addEventListener('pause', () => {
+                    playPauseBtn.classList.remove('hidden');
+                    playIcon.classList.remove('hidden');
+                    pauseIcon.classList.add('hidden');
+                });
+
+                // Click video or center button to play/pause
+                video.addEventListener('click', togglePlayPause);
+                playPauseBtn.addEventListener('click', togglePlayPause);
+
+                // Mute/Unmute Button
+                muteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent click from bubbling to video
+                    video.muted = !video.muted;
+                    if (video.muted) {
+                        muteIcon.classList.remove('hidden');
+                        unmuteIcon.classList.add('hidden');
+                    } else {
+                        muteIcon.classList.add('hidden');
+                        unmuteIcon.classList.remove('hidden');
+                    }
+                });
+
+                // Initial state
+                if (video.muted) {
+                    muteIcon.classList.remove('hidden');
+                    unmuteIcon.classList.add('hidden');
+                } else {
+                    muteIcon.classList.add('hidden');
+                    unmuteIcon.classList.remove('hidden');
+                }
+
+                if (video.paused) {
+                    playPauseBtn.classList.remove('hidden');
+                    playIcon.classList.remove('hidden');
+                    pauseIcon.classList.add('hidden');
+                } else {
+                    playPauseBtn.classList.add('hidden');
+                }
+            }
+
+            // --- NEW: Custom Video Player Logic (Maheshwara Video) ---
+            function initMaheshwaraVideoPlayer() {
+                const video = document.getElementById('maheshwara-video');
+                const playPauseBtn = document.getElementById('maheshwara-play-pause-btn');
+                const playIcon = document.getElementById('maheshwara-play-icon');
+                const pauseIcon = document.getElementById('maheshwara-pause-icon');
+                const muteBtn = document.getElementById('maheshwara-mute-btn');
+                const muteIcon = document.getElementById('maheshwara-mute-icon');
+                const unmuteIcon = document.getElementById('maheshwara-unmute-icon');
+
+                if (!video) return; // Guard clause
+
+                function togglePlayPause() {
+                    if (video.paused || video.ended) {
+                        video.play();
+                    } else {
+                        video.pause();
+                    }
+                }
+
+                // Show/Hide Center Button
+                video.addEventListener('play', () => {
+                    playPauseBtn.classList.add('hidden');
+                    playIcon.classList.add('hidden');
+                    pauseIcon.classList.remove('hidden');
+                });
+
+                video.addEventListener('pause', () => {
+                    playPauseBtn.classList.remove('hidden');
+                    playIcon.classList.remove('hidden');
+                    pauseIcon.classList.add('hidden');
+                });
+
+                // Click video or center button to play/pause
+                video.addEventListener('click', togglePlayPause);
+                playPauseBtn.addEventListener('click', togglePlayPause);
+
+                // Mute/Unmute Button
+                muteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent click from bubbling to video
+                    video.muted = !video.muted;
+                    if (video.muted) {
+                        muteIcon.classList.remove('hidden');
+                        unmuteIcon.classList.add('hidden');
+                    } else {
+                        muteIcon.classList.add('hidden');
+                        unmuteIcon.classList.remove('hidden');
+                    }
+                });
+
+                // Initial state
+                if (video.muted) {
+                    muteIcon.classList.remove('hidden');
+                    unmuteIcon.classList.add('hidden');
+                } else {
+                    muteIcon.classList.add('hidden');
+                    unmuteIcon.classList.remove('hidden');
+                }
+
+                if (video.paused) {
+                    playPauseBtn.classList.remove('hidden');
+                    playIcon.classList.remove('hidden');
+                    pauseIcon.classList.add('hidden');
+                } else {
+                    playPauseBtn.classList.add('hidden');
+                }
+            }
+
+            // --- NEW: Custom Video Player Logic (Interaction Video) ---
+            function initInteractionVideoPlayer() {
+                const video = document.getElementById('interaction-video');
+                const playPauseBtn = document.getElementById('interaction-play-pause-btn');
+                const playIcon = document.getElementById('interaction-play-icon');
+                const pauseIcon = document.getElementById('interaction-pause-icon');
+                const muteBtn = document.getElementById('interaction-mute-btn');
+                const muteIcon = document.getElementById('interaction-mute-icon');
+                const unmuteIcon = document.getElementById('interaction-unmute-icon');
+
+                if (!video) return; // Guard clause
+
+                function togglePlayPause() {
+                    if (video.paused || video.ended) {
+                        video.play();
+                    } else {
+                        video.pause();
+                    }
+                }
+
+                // Show/Hide Center Button
+                video.addEventListener('play', () => {
+                    playPauseBtn.classList.add('hidden');
+                    playIcon.classList.add('hidden');
+                    pauseIcon.classList.remove('hidden');
+                });
+
+                video.addEventListener('pause', () => {
+                    playPauseBtn.classList.remove('hidden');
+                    playIcon.classList.remove('hidden');
+                    pauseIcon.classList.add('hidden');
+                });
+
+                // Click video or center button to play/pause
+                video.addEventListener('click', togglePlayPause);
+                playPauseBtn.addEventListener('click', togglePlayPause);
+
+                // Mute/Unmute Button
+                muteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent click from bubbling to video
+                    video.muted = !video.muted;
+                    if (video.muted) {
+                        muteIcon.classList.remove('hidden');
+                        unmuteIcon.classList.add('hidden');
+                    } else {
+                        muteIcon.classList.add('hidden');
+                        unmuteIcon.classList.remove('hidden');
+                    }
+                });
+
+                // Initial state
+                if (video.muted) {
+                    muteIcon.classList.remove('hidden');
+                    unmuteIcon.classList.add('hidden');
+                } else {
+                    muteIcon.classList.add('hidden');
+                    unmuteIcon.classList.remove('hidden');
+                }
+
+                if (video.paused) {
+                    playPauseBtn.classList.remove('hidden');
+                    playIcon.classList.remove('hidden');
+                    pauseIcon.classList.add('hidden');
+                } else {
+                    playPauseBtn.classList.add('hidden');
+                }
+            }
+
+            // --- NEW: HUD Image Gallery Logic ---
+            function initHudGallery() {
+                const images = [
+                    './img/Legacy_of_Blade/MainMenu.png',
+                    './img/Legacy_of_Blade/E Key.png',
+                    './img/Legacy_of_Blade/ResolutionMenu.png',
+                    './img/Legacy_of_Blade/PauseMenu.png',
+                    './img/Legacy_of_Blade/Enemy healthbar.png'
+                ];
+                let currentIndex = 0; // This will be the index for the LEFT image
+
+                // UPDATED: Get the two new image elements
+                const imageEl1 = document.getElementById('hud-image-1');
+                const imageEl2 = document.getElementById('hud-image-2');
+
+                const prevBtn = document.getElementById('hud-prev-btn');
+                const nextBtn = document.getElementById('hud-next-btn');
+                const counterEl = document.getElementById('hud-counter');
+
+                // Check for all new elements
+                if (!imageEl1 || !imageEl2 || !prevBtn || !nextBtn || !counterEl) {
+                    console.warn("HUD Gallery elements not found. Gallery will not initialize.");
+                    return;
+                }
+
+                function showImage(index) {
+                    currentIndex = index;
+
+                    // Calculate the index for the RIGHT image
+                    // The '%' (modulo) operator makes it wrap around to 0
+                    let nextIndex = (currentIndex + 1) % images.length;
+
+                    // Set the src for BOTH images
+                    imageEl1.src = images[currentIndex];
+                    imageEl2.src = images[nextIndex];
+
+                    // Update the counter text
+                    counterEl.textContent = `Images ${currentIndex + 1} & ${nextIndex + 1} / ${images.length}`;
+                }
+
+                prevBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    // Use modulo to wrap around if we go below 0
+                    let newIndex = (currentIndex - 1 + images.length) % images.length;
+                    showImage(newIndex);
+                });
+
+                nextBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    // Use modulo to wrap around if we go past the end
+                    let newIndex = (currentIndex + 1) % images.length;
+                    showImage(newIndex);
+                });
+
+                // Initialize
+                showImage(0);
+            }
+
+
+            document.addEventListener('DOMContentLoaded', () => {
+                initVideoPlayer();
+                initCombatVideoPlayer(); // Initialize the combat player
+                initWeaponVideoPlayer(); // Initialize the weapon player
+                initMaheshwaraVideoPlayer(); // Initialize the Maheshwara player
+                initInteractionVideoPlayer(); // Initialize the Interaction player
+                initHudGallery(); // Initialize the new HUD gallery
+            });
+        </script>
+</body>
+</html>
