@@ -183,20 +183,16 @@
                         Your browser does not support the video tag.
                     </video>
 
-                    <!-- Control Bar (Seek Bar and Time Display ONLY) --><div id="video-controls" class="absolute inset-x-0 bottom-0 mx-auto w-full p-1">
+                    <iframe width="100%" height="100%"
+                          src="https://www.youtube.com/embed/ndN2iFjUvrw"
+                          title="Brackeys Game Jam Project"
+                          frameborder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          allowfullscreen
+                          class="w-full h-full shadow-2xl">
+                   </iframe>
 
-                        <!-- Seek Bar --><input type="range" id="progress-bar" value="0" min="0" max="100" step="0.1"
-                                                class="w-full custom-range transition-colors duration-100 mb-1">
-
-                        <!-- Control Row (Time Display ONLY) --><div class="flex items-center justify-end text-xs font-semibold text-bg-primary" style="text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);">
-
-                            <!-- Current Time / Duration --><div class="flex space-x-1">
-                                <span id="current-time">0:00</span>
-                                <span>/</span>
-                                <span id="video-duration">0:00</span>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -516,4 +512,5 @@
         });
     </script>
 </body>
+
 </html>
