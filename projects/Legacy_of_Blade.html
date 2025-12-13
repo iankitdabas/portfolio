@@ -241,8 +241,8 @@
                     </div>
                     <!-- Right Column: Media (VIDEO ADDED) -->
                     <!-- FIXED: Added 4:5 aspect ratio box and custom controls -->
-                    <div class="w-full h-full aspect-ratio-box aspect-w-4 aspect-h-5 rounded-lg shadow-inner relative">
-                        <video id="combat-video" autoplay loop muted playsinline class="absolute top-0 left-0 rounded-lg object-contain w-full h-full">
+                    <div class="relative w-full max-w-md aspect-[4/5] rounded-lg shadow-inner mx-auto">
+                        <video id="combat-video" autoplay loop muted playsinline class="absolute inset-0 w-full h-full rounded-lg object-contain">
                             <!-- FIXED: object-contain -->
                             <!-- FIXED: Path corrected to ./video/ -->
                             <source src="./Video/Legacy_of_Blade/CombatSystem.mp4" type="video/mp4">
@@ -263,8 +263,9 @@
             <!-- SECTION 2: Weapon (Left: Media, Right: Text) --><div>
                 <h4 class="text-xl font-heading font-bold text-charcoal-accent mb-4 mt-6">Weapon System (Sword & Leviathan Axe)</h4>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-                    <!-- Left Column: Media (VIDEO ADDED) --><div class="w-full h-full aspect-ratio-box aspect-w-4 aspect-h-5 rounded-lg shadow-inner relative md:order-1">
-                        <!-- Replaced placeholder with video --><video id="weapon-video" autoplay loop muted playsinline class="absolute top-0 left-0 rounded-lg object-cover w-full h-full">
+                    <!-- Left Column: Media (VIDEO ADDED) -->
+                    <div class="relative w-full max-w-md aspect-[4/5] rounded-lg shadow-inner mx-auto">
+                        <video id="combat-video" autoplay loop muted playsinline class="absolute inset-0 w-full h-full rounded-lg object-contain">
                             <!-- FIXED: Path corrected to ./video/ -->
                             <source src="./Video/Legacy_of_Blade/Levithan_Axe.mp4" type="video/mp4">
                             Your browser does not support the video tag.
@@ -305,9 +306,9 @@
                         </p>
                       
                     </div>
-                    <!-- Right Column: Media (VIDEO ADDED) --><div class="w-full h-full aspect-ratio-box aspect-w-4 aspect-h-5 rounded-lg shadow-inner relative">
-                        <!-- Replaced placeholder with video -->
-                        <video id="maheshwara-video" autoplay loop muted playsinline class="absolute top-0 left-0 rounded-lg object-cover w-full h-full">
+                    <!-- Right Column: Media (VIDEO ADDED) -->
+                    <div class="relative w-full max-w-md aspect-[4/5] rounded-lg shadow-inner mx-auto">
+                        <video id="combat-video" autoplay loop muted playsinline class="absolute inset-0 w-full h-full rounded-lg object-contain">
                             <!-- FIXED: Path corrected to ./video/ -->
                             <source src="./Video/Legacy_of_Blade/Maheshwara.mp4" type="video/mp4">
                             Your browser does not support the video tag.
@@ -331,8 +332,8 @@
                 <h4 class="text-xl font-heading font-bold text-charcoal-accent mb-4 mt-6">Object Interaction Section</h4>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
                     <!-- Left Column: Media (Placeholder) -->
-                    <div class="w-full h-full aspect-ratio-box aspect-w-4 aspect-h-5 rounded-lg shadow-inner relative md:order-1">
-                        <video id="interaction-video" autoplay loop muted playsinline class="absolute top-0 left-0 rounded-lg object-cover w-full h-full">
+                    <div class="relative w-full max-w-md aspect-[4/5] rounded-lg shadow-inner mx-auto">
+                        <video id="combat-video" autoplay loop muted playsinline class="absolute inset-0 w-full h-full rounded-lg object-contain">
                             <!-- FIXED: Path corrected to ./video/ -->
                             <source src="./Video/Legacy_of_Blade/Object Interaction.mp4" type="video/mp4"> <!-- Placeholder Path -->
                             Your browser does not support the video tag.
@@ -873,6 +874,7 @@
 </body>
 
 </html>
+
 
 
 
