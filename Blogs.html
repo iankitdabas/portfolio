@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blogs | Coming Soon</title>
+    <!-- Load Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Configure Tailwind for custom colors and font (Matches Main Site) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bg-primary': '#F0F0F0', // Slightly darker background
+                        'text-default': '#2A2A2A', // Dark Gray Text
+                        'charcoal-accent': '#333333', // Dark Charcoal Accent Color
+                        'dark-border': '#E0E0E0', // Light Gray Border
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        heading: ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+        .body-gradient {
+            background: linear-gradient(to bottom, #F0F0F0 0%, #F5F5F5 50vh, #D3D3D3 100%);
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body class="text-text-default font-sans antialiased body-gradient h-screen flex flex-col">
+
+    <!-- Fixed Navigation Header -->
+    <header class="fixed top-0 left-0 right-0 bg-bg-primary/90 backdrop-blur-sm z-50 shadow-sm">
+        <div class="container mx-auto px-6 lg:px-24 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-xl font-heading font-bold text-charcoal-accent">Ankit Dabas</a>
+            <a href="index.html" class="sm:text-sm text-charcoal-accent font-semibold hover:underline">← Back to Portfolio</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex items-center justify-center px-6 text-center">
+        <div class="max-w-2xl">
+            <h1 class="text-3xl md:text-5xl font-heading font-bold text-charcoal-accent mb-6">
+                Still shaping this part of the site — stay tuned
+            </h1>
+            <div class="w-16 h-1 bg-charcoal-accent mx-auto rounded-full"></div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="container mx-auto px-6 lg:px-24 py-8 text-center text-sm text-project-meta border-t border-dark-border mt-auto">
+        <p>&copy; <span id="current-year"></span> Ankit Dabas. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
